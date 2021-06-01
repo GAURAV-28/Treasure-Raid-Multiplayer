@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <iostream>
+#include <iomanip>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

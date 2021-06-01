@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <iomanip>
+#include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 

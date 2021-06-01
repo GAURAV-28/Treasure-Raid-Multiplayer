@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
 #include "maze.hpp"
 #include "map.hpp"
 #include <SDL2/SDL.h>
