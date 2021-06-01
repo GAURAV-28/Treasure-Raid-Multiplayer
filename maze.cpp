@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <random>
+#include "maze.hpp"
 
 #define UP 0     //-y
 #define DOWN 1   //+y
@@ -14,11 +16,11 @@
 #define RED   fprintf(outfile, "%c%c%c", 0,0,255)
 
 int numin = 1;     //Number of cells in the maze.
-const int xsize = 14;
-const int ysize = 14;
+const int xsize = 12;
+const int ysize = 12;
 
 void initialize();
-void generate();
+void generateMaze();
 void savebmp(int xspecial, int yspecial);
 void printMaze();
 std::string getMaze();
@@ -32,18 +34,31 @@ struct cell{
 
 cell MAZE[xsize][ysize];
 
-int main(){
+std::string MazeGenerator::generate(){
 
 	srand((unsigned int)time(NULL)); //seed random number generator with system time
 	initialize();      //initialize the maze
-	generate();        //generate the maze
+	generateMaze();        //generate the maze
     savebmp(0,0);
     printMaze();
     //std::cout << getMaze() << std::endl;
 
-    return 0;
+    return getMaze();
 
 }
+
+// int main(){
+
+// 	srand((unsigned int)time(NULL)); //seed random number generator with system time
+// 	initialize();      //initialize the maze
+// 	generate();        //generate the maze
+//     savebmp(0,0);
+//     printMaze();
+//     //std::cout << getMaze() << std::endl;
+
+//     return 0;
+
+// }
 
 void initialize(){
 	//Initialize the maze!
@@ -59,7 +74,7 @@ void initialize(){
 	return;
 }
 
-void generate(){
+void generateMaze(){
 	int xcur =1, ycur = 1; //start growing from the corner. It could theoretically start growing from anywhere, doesn't matter.
 	MAZE[xcur][ycur].in = 1;
 	int whichway;
