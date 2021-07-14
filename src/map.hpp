@@ -1,6 +1,9 @@
+#pragma once
+
 #include <string>
 #include <iomanip>
 #include <memory>
+#include "image.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -22,13 +25,14 @@ enum class map_state {
 class Map{
 
     SDL_Renderer *renderer;
+    const ImageManager *image_manager_;
     map_state block[y_count][x_count];
 
     public:
-      Map(SDL_Renderer *renderer) : renderer(renderer) {}
+      Map(SDL_Renderer *renderer, const ImageManager *image_manager) : renderer(renderer), image_manager_(image_manager) {}
             
       void init();
-      void draw();
+      void draw() const;
 
     //  inline map_state check_state(const Point &p) const noexcept {
     //     return block_[p.y][p.x];
@@ -37,4 +41,8 @@ class Map{
     //   inline map_state check_state(const Point &&p) const noexcept {
     //     return check_state(p);
     //   }
+
+    inline map_state check_state(int x, int y) const {
+      return block[y][x];
+    }
 };
