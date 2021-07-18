@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project
-OBJS = maze.cpp map.cpp main.cpp
+OBJS = src/maze.cpp src/map.cpp src/main.cpp
 
 #CC specifies which compiler we're using
 CC = g++
