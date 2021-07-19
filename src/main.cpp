@@ -4,6 +4,7 @@
 #include "map.hpp"
 #include "player.hpp"
 #include "image.hpp"
+#include "enemy.hpp"
 #include "input.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -25,6 +26,7 @@ std::unique_ptr<ImageManager> image_manager_;
 std::unique_ptr<InputManager> input_manager_;
 std::unique_ptr<Map> map;
 std::unique_ptr<Player> p1,p2;
+std::unique_ptr<Enemy> enem;
 
 enum class game_mode {
   single,
@@ -55,15 +57,17 @@ int main(){
     map = std::make_unique<Map>(renderer,image_manager_.get());
 	p1 = std::make_unique<Player>(player_type::p1, renderer, image_manager_.get());
 	p2 = std::make_unique<Player>(player_type::p2, renderer, image_manager_.get());
+	enem = std::make_unique<Enemy>(renderer, image_manager_.get());
     //SDL_ShowCursor(SDL_DISABLE);
 
     bool quit = false;
-	int mode = 0;
+	int mode = 1;
 	//Event handler
 	SDL_Event e;
     map->init();
 	p1->init();
 	p2->init();
+	enem->init();
 	//While application is running
 	while( !quit ){
 	    //Handle events on queue
@@ -75,6 +79,7 @@ int main(){
         map->draw();
 		p1->draw(mode);
 		p2->draw(mode);
+		enem->draw();
 		if(input_manager_->edge_key_p(player_type::p1, input_device::x) || input_manager_->edge_key_p(player_type::p1,input_device::up)) std::cout<<"up key pressed!\n";
 
 		//Update screen

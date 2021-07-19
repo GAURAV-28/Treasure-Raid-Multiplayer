@@ -10,7 +10,7 @@ namespace enemy_character{
        e0=0,
        e1=1,
        e2,
-       e3,
+       //e3,
        count
    };
 }
@@ -45,8 +45,8 @@ class Enemy{
       }
     
       inline void init(){
-          pair<int,int> start_block[enemy_charcter::count] = {
-              {11, 12}, {12, 12}, {11, 11}, {12, 11}};
+          std::pair<int,int> start_block[enemy_character::count] = {
+              {1, 19}, {19, 1}, {19, 19}};
         for (auto &enemy : enemies_) {
             enemy.pos_x = size * start_block[enemy.type].first;
             enemy.pos_y = size * start_block[enemy.type].second;
@@ -108,7 +108,7 @@ class Enemy{
         //     }
         //   }
         }
-        SDL_DestroyTexture(enemy_texture);
+        SDL_DestroyTexture(enemies_texture);
     }
     inline void move(const Map &map,
                    const Player &p1, const Player &p2) noexcept {
@@ -121,6 +121,6 @@ class Enemy{
         }
     }
 
-    bool check_hit_enemy(const game_mode mode, Player &p1, Player &p2) noexcept;
+    //bool check_hit_enemy(const game_mode mode, Player &p1, Player &p2) noexcept;
 
 };
