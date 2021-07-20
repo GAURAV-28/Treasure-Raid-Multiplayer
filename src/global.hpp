@@ -4,22 +4,18 @@
 #include <math.h>
 
 namespace screen {
-
 enum {
   width = 840,
   height = 840,
 };
-
 }  // namespace screen
 
 namespace block {
-
 enum {
   size = 40,
   x_count = 21,
   y_count = 21,
 };
-
 }  // namespace block
 
 // enum class game_mode {
