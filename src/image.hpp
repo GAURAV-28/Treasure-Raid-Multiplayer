@@ -41,7 +41,7 @@ class ImageManager {
     load("./data/cow.png", image::p1);
     load("./data/qq.png", image::p2);
     load("./data/9.png", image::bg);
-    load("./data/fbg (1).png", image::fullbg);
+    load("./data/r2.png", image::fullbg);
     // // load("./data/player2.png", image::p2);
     // load("./data/bg.png", image::bg);
     // load("./data/bg_red.png", image::bg_red);

@@ -25,6 +25,9 @@ namespace rgb {
 const RGB black = RGB{0x00, 0x00, 0x00};
 const RGB red = RGB{0xff, 0x00, 0x00};
 const RGB white = RGB{0xff, 0xff, 0xff};
+const RGB tc = RGB({0xff,0xc9,0x47});
+const RGB blink = RGB({0xdf, 0x76, 0x0b});
+const RGB op2 = RGB({0xde,0xff,0xff});
 }
 
 //game class
@@ -48,6 +51,7 @@ class Game{
     unsigned int game_mode_;
     unsigned int blink_count_;
     unsigned int game_count_;
+    unsigned int menu_option_;
 
     //pointers to all components of the game
     std::unique_ptr<ImageManager> image_manager_;
@@ -75,7 +79,7 @@ class Game{
     
     //initialization functions
     bool init();            //Starts up SDL and creates window (game.cpp)
-    inline void close(){   //Frees media and shuts down SDL
+    inline void close(){    //Frees media and shuts down SDL
 	    //Destroy window	
 	    SDL_DestroyRenderer( renderer );
 	    SDL_DestroyWindow( window );
@@ -126,9 +130,10 @@ class Game{
         window(nullptr),
         renderer(nullptr),
         game_state_(game_state::title),
-        game_mode_(1),
+        game_mode_(0),
         blink_count_(0),
-        game_count_(0)
+        game_count_(0),
+        menu_option_(0)
     {
         init();
 	    image_manager_ = std::make_unique<ImageManager>(renderer);
@@ -142,9 +147,9 @@ class Game{
 
     inline void play(){
         //game loop
-        map->init();
-        p1->init(map.get());
-        p2->init(map.get());
+        //map->init();
+        //p1->init(map.get());
+        //p2->init(map.get());
         while(1){
             input_manager_->update();
 
@@ -152,8 +157,8 @@ class Game{
             
             switch (game_state_) {
             case game_state::title:
-                //game_title();
-                game_pause();
+                game_title();
+                //game_pause();
                 break;
             case game_state::start:
             case game_state::playing:

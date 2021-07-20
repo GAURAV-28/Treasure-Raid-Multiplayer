@@ -5,7 +5,9 @@
 
 namespace font_size {
 enum {
-  x64 =0,
+  x96,
+  x64,
+  x48,
   x36,
   x16,
   count,
@@ -29,9 +31,11 @@ class Font{
       std::cerr << "error: " << TTF_GetError() << '\n';
       exit(EXIT_FAILURE);
     }
-    load("./data/GenEiGothicP-Heavy.otf", 64, font_size::x64);
-    load("./data/GenEiGothicP-Heavy.otf", 36, font_size::x36);
-    load("./data/GenEiGothicP-Regular.otf", 16, font_size::x16);
+    load("./data/SF Atarian System Bold.ttf", 96, font_size::x96);
+    load("./data/SF Atarian System Bold.ttf", 48, font_size::x48);
+    load("./data/SF Atarian System Bold.ttf", 64, font_size::x64);
+    load("./data/SF Atarian System Bold.ttf", 36, font_size::x36);
+    load("./data/SF Atarian System.ttf", 16, font_size::x16);
   }
 
   inline TTF_Font *get(const unsigned char font_size) const{
