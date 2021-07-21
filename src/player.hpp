@@ -61,7 +61,7 @@ class Player{
       }
     }
 
-    inline void draw(int mode) const{
+    inline void draw(unsigned int mode) const{
       switch (type){
         case player_type::p1:{
           SDL_Texture *p_texture = image_manager_->get(image::p1);

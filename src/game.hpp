@@ -6,6 +6,7 @@
 #include <memory>
 #include <sstream>
 #include "font.hpp"
+#include "coins.hpp"
 #include "input.hpp"
 #include "image.hpp"
 #include "map.hpp"
@@ -28,6 +29,7 @@ const RGB white = RGB{0xff, 0xff, 0xff};
 const RGB tc = RGB({0xff,0xc9,0x47});
 const RGB blink = RGB({0xdf, 0x76, 0x0b});
 const RGB op2 = RGB({0xde,0xff,0xff});
+const RGB foot = RGB{0xff,0xeb,0xaf};
 }
 
 //game class
@@ -58,7 +60,7 @@ class Game{
     std::unique_ptr<InputManager> input_manager_;
     Font font_;
     std::unique_ptr<Map> map;
-    //std::unique_ptr<Food> food;
+    std::unique_ptr<Coin> coin;
     //std::unique_ptr<Enemy> enemy;
     std::unique_ptr<Player> p1;
     std::unique_ptr<Player> p2;
@@ -139,6 +141,7 @@ class Game{
 	    image_manager_ = std::make_unique<ImageManager>(renderer);
 	    input_manager_ = std::make_unique<InputManager>();
         map = std::make_unique<Map>(renderer,image_manager_.get());
+        coin = std::make_unique<Coin>(image_manager_.get());
 	    p1 = std::make_unique<Player>(player_type::p1, renderer, image_manager_.get(), input_manager_.get());
 	    p2 = std::make_unique<Player>(player_type::p2, renderer, image_manager_.get(), input_manager_.get());
 
@@ -165,11 +168,6 @@ class Game{
             case game_state::clear:
             case game_state::miss:
             case game_state::gameover:
-                // map->draw();
-                // p1->draw(game_mode_);
-                // p2->draw(game_mode_);
-                // p1->move(*map);
-                // p2->move(*map);
                 play_game();
                 break;
             case game_state::pause:

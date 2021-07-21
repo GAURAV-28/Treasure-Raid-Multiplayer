@@ -11,6 +11,8 @@ namespace image {
         p2,
         bg,
         fullbg,
+        crown,
+        coin,
         count,
     };
 }  
@@ -42,20 +44,8 @@ class ImageManager {
     load("./data/qq.png", image::p2);
     load("./data/9.png", image::bg);
     load("./data/r2.png", image::fullbg);
-    // // load("./data/player2.png", image::p2);
-    // load("./data/bg.png", image::bg);
-    // load("./data/bg_red.png", image::bg_red);
-    // load("./data/bg_green.png", image::bg_green);
-    // load("./data/bg_blue.png", image::bg_blue);
-    // load("./data/food.png", image::food);
-    // load("./data/food_counter.png", image::food_counter);
-    // load("./data/player1.png", image::akabei);
-    // load("./data/player1.png", image::pinky);
-    // load("./data/player1.png", image::aosuke);
-    // //load("./data/guzuta.png", image::guzuta);
-    // load("./data/mon_run.png", image::mon_run);
-    // load("./data/plate.png", image::plate);
-    // load("./data/ultron.png", image::ultron);
+    load("./data/crown.png", image::crown);
+    load("./data/r.png", image::coin);
   }
 
   inline SDL_Texture *get(const unsigned char image_type) const{

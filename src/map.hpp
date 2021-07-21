@@ -21,7 +21,8 @@ enum class map_state {
   path,
   coin,
   player1_init_pos,
-  player2_init_pos
+  player2_init_pos,
+  end
 };
 
 class Map{

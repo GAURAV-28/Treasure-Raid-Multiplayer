@@ -5,14 +5,14 @@
 #include "global.hpp"
 //#include "enemy.hpp"
 #include "font.hpp"
-//#include "food.hpp"
+#include "coins.hpp"
 #include "image.hpp"
 #include "input.hpp"
 #include "image.hpp"
 #include "map.hpp"
 //#include "mixer_manager.hpp"
 #include "player.hpp"
-//#include "wipe.hpp"
+
 
 void Game::game_title(){
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -51,7 +51,13 @@ void Game::game_title(){
           //SDL_RenderFillRect(renderer, &p1_str_dst);
           text(font_size::x64, rgb::op2, Point{360,300}, "START");
           text(font_size::x64, rgb::blink, Point{370,420}, "HELP");
-          
+
+          if (input_manager_->edge_key_p(player_type::p1, input_device::x)
+          || input_manager_->press_key_p(player_type::p2, input_device::x)
+          || input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
+            ++game_count_;
+            blink_count_ = 0;
+          }
           break;
         }
 
@@ -60,6 +66,13 @@ void Game::game_title(){
           //SDL_RenderFillRect(renderer, &p1_str_dst);
           text(font_size::x64, rgb::blink, Point{360,300}, "START");
           text(font_size::x64, rgb::op2, Point{370,420}, "HELP");
+
+          if (input_manager_->edge_key_p(player_type::p1, input_device::x)
+          || input_manager_->press_key_p(player_type::p2, input_device::x)
+          || input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
+            game_count_=4;
+            blink_count_ = 0;
+          }
           
           break;
         }
@@ -77,13 +90,7 @@ void Game::game_title(){
           menu_option_=0;
       }
 
-      //move to next state
-      if (input_manager_->edge_key_p(player_type::p1, input_device::x)
-      || input_manager_->press_key_p(player_type::p2, input_device::x)
-      || input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
-        ++game_count_;
-        blink_count_ = 0;
-      }
+      text(font_size::x36, rgb::foot, Point{200,780}, "developed by: gaurav jain and t abishek");
 
       break;
     }
@@ -100,6 +107,7 @@ void Game::game_title(){
       text(font_size::x96, rgb::tc, Point{120,100}, "Select Game Mode");
       if (blink_count_ < 30) {
         text(font_size::x48, rgb::tc, Point{240,540}, "press enter to continue");
+        text(font_size::x48, rgb::tc, Point{245,600}, "press space to go back");
         ++blink_count_;
       } else if (blink_count_ < 60) {
         ++blink_count_;
@@ -124,11 +132,16 @@ void Game::game_title(){
         }
       }
 
-      //continue to next screen
+      //continue to next/prev screen
       if (input_manager_->press_key_p(player_type::p1, input_device::x)
           || input_manager_->press_key_p(player_type::p2, input_device::x)
           || input_manager_->press_key_p(player_type::p1, input_device::enter)) {
         ++game_count_;
+      }
+      else if (input_manager_->press_key_p(player_type::p1, input_device::x)
+          || input_manager_->press_key_p(player_type::p2, input_device::x)
+          || input_manager_->press_key_p(player_type::p1, input_device::space)) {
+        game_count_=0;
       }
 
       //select between the game modes
@@ -162,7 +175,7 @@ void Game::game_title(){
       // initialize globals
       
       map->init();
-        //food_->init(*map);
+      coin->init(map.get(), game_mode_);
         //enemy_->init();
       p1->init(map.get());
       p2->init(map.get());
@@ -183,6 +196,40 @@ void Game::game_title(){
       //Mix_PlayMusic(mixer_manager_->get_music(), -1);
       break;
     }
+
+    case 4: {
+      text(font_size::x96, rgb::tc, title_pos, title_str);
+      if (!input_manager_->press_key_p(player_type::p1, input_device::x)
+          && !input_manager_->press_key_p(player_type::p2, input_device::x)
+          && !input_manager_->press_key_p(player_type::p1, input_device::enter)) {
+        ++game_count_;
+      }
+      break;
+    }
+    case 5:{
+      text(font_size::x96, rgb::tc, Point{360,100}, "Help");
+      if (blink_count_ < 30) {
+        text(font_size::x48, rgb::tc, Point{250,540}, "press space to go back");
+        ++blink_count_;
+      } else if (blink_count_ < 60) {
+        ++blink_count_;
+      } else {
+        blink_count_ = 0;
+      }
+
+      //continue to next screen
+      if (input_manager_->press_key_p(player_type::p1, input_device::x)
+          || input_manager_->press_key_p(player_type::p2, input_device::x)
+          || input_manager_->press_key_p(player_type::p1, input_device::space)) {
+        game_count_=0;
+      }
+
+      text(font_size::x64, rgb::blink, Point{60,200}, "Controls");
+      
+      break;
+    }
+
+
     default:
       break;
   }

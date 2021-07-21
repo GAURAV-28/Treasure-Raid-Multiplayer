@@ -5,21 +5,19 @@
 #include "global.hpp"
 //#include "enemy.hpp"
 #include "font.hpp"
-//#include "food.hpp"
+#include "coins.hpp"
 #include "image.hpp"
 #include "input.hpp"
 #include "image.hpp"
 #include "map.hpp"
 //#include "mixer_manager.hpp"
 #include "player.hpp"
-//#include "wipe.hpp"
-
 
   
 //game function when play game mode is on..
 void Game::play_game(){
   map->draw();
-  //food_->draw();
+  coin->draw();
   //enemy_->draw();
   p1->draw(game_mode_);
   p2->draw(game_mode_);

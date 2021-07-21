@@ -33,9 +33,9 @@ void Map::init(){
     MazeGenerator mg;
     const std::string block_src = mg.generate();
 
-    for (unsigned int y = 0; y < 21; ++y) {
-        for (unsigned int x = 0; x < 21; ++x) {
-            block[y][x] = char_to_map_state(block_src[y * 21 + x]);
+    for (unsigned int y = 0; y < block::y_count; ++y) {
+        for (unsigned int x = 0; x < block::x_count; ++x) {
+            block[y][x] = char_to_map_state(block_src[y * block::y_count + x]);
         }
     }
 
@@ -43,6 +43,7 @@ void Map::init(){
   if(block[2][1]!=map_state::block) block[2][1]=map_state::player2_init_pos;
   else block[1][2]=map_state::player2_init_pos;
 
+  block[19][19]=map_state::end;
 }
 
 void Map::draw() const{
@@ -51,6 +52,9 @@ void Map::draw() const{
     
   SDL_Texture *p_texture = nullptr;
   p_texture = image_manager_->get(image::bg);
+
+  SDL_Texture *crown_tex = NULL;
+  crown_tex = image_manager_->get(image::crown);
 
     //SDL_CreateTextureFromSurface(renderer_, image);
 
@@ -67,8 +71,8 @@ void Map::draw() const{
 
     const SDL_Rect src[2] = {{0, 0, block::size, block::size}, {block::size, 0, block::size, block::size}};
 
-    for (unsigned int y = 0; y < 21; ++y) {
-    	for (unsigned int x = 0; x < 21; ++x) {
+    for (unsigned int y = 0; y < block::y_count; ++y) {
+    	for (unsigned int x = 0; x < block::x_count; ++x) {
           const SDL_Rect dst = {static_cast<Sint16>(block::size * x), static_cast<Sint16>(block::size * y), block::size, block::size};
 
           switch (block[y][x]) {
@@ -76,15 +80,19 @@ void Map::draw() const{
               image_manager_->render_copy(*p_texture, src[0], dst);
               //SDL_RenderCopy(renderer, gTexture1, &src[0], &dst);
               break;
-			      case map_state::coin:
 			      case map_state::player1_init_pos:
             case map_state::player2_init_pos:	
+            case map_state::coin:
             case map_state::path:
-              //image_manager_->render_copy(*p_texture, src[0], dst);
-              image_manager_->render_copy(*p_texture, src[1], dst);
+              image_manager_->render_copy(*p_texture,src[1],dst);
+              break;
+            case map_state::end:
+              image_manager_->render_copy(*p_texture,src[1],dst);
+              image_manager_->render_copy(*crown_tex,src[0],dst);
               break;
           }
         }
     }
   SDL_DestroyTexture(p_texture);
+  SDL_DestroyTexture(crown_tex);
 }
