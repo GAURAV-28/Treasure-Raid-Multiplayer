@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include "maze.hpp"
 #include "map.hpp"
 #include "global.hpp"
 #include "image.hpp"
@@ -30,7 +29,7 @@ void Map::init(){
   
     //const ImageManager *image_manager_;
     //map_state block_[x_count][21];
-    MazeGenerator mg;
+    
     const std::string block_src = mg.generate();
 
     for (unsigned int y = 0; y < block::y_count; ++y) {
@@ -39,9 +38,19 @@ void Map::init(){
         }
     }
 
+    for (unsigned int y = 1; y < block::y_count-1; ++y) {
+      block[y][1] = map_state::path;
+      block[y][19] = map_state::path;
+    }
+
+    for (unsigned int x = 1; x < block::x_count-1; ++x) {
+      block[1][x] = map_state::path;
+      block[19][x] = map_state::path;
+    }
+
 	block[1][1] = map_state::player1_init_pos;
-  if(block[2][1]!=map_state::block) block[2][1]=map_state::player2_init_pos;
-  else block[1][2]=map_state::player2_init_pos;
+  block[1][2] = map_state::player2_init_pos;
+  
 
   block[19][19]=map_state::end;
 }

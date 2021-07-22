@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <memory>
 #include "image.hpp"
+#include "maze.hpp"
 #include "global.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -30,6 +31,7 @@ class Map{
     SDL_Renderer *renderer;
     const ImageManager *image_manager_;
     map_state block[block::y_count][block::x_count];
+    MazeGenerator mg;
 
     public:
       Map(SDL_Renderer *renderer, const ImageManager *image_manager) : renderer(renderer), image_manager_(image_manager) {}

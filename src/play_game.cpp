@@ -8,7 +8,6 @@
 #include "coins.hpp"
 #include "image.hpp"
 #include "input.hpp"
-#include "image.hpp"
 #include "map.hpp"
 //#include "mixer_manager.hpp"
 #include "player.hpp"
@@ -21,7 +20,7 @@ void Game::play_game(){
   //enemy_->draw();
   p1->draw(game_mode_);
   p2->draw(game_mode_);
-  //draw_score();
+  score();
   //enemy_->move(debug_lose_enemy_, *map_, *p1_, game_mode_);
   p1->move(*map);
   p2->move(*map);
@@ -32,12 +31,10 @@ void Game::play_game(){
   //   p2_->set_power_mode(p2_->get_power_mode() - 1);
   // }
 
-//   const bool food_state =
-//       food_->check_state(game_mode_, *p1_);
+const bool coin_state = coin->check_state(game_mode_, *p1, *p2);
 //   const bool hit_enemy = enemy_->check_hit_enemy(game_mode_, *p1_);
-//   if (food_state) {
-//     game_state_ = game_state::clear;
-//   } else if (hit_enemy) {
+if(coin_state) game_state_ = game_state::clear;
+//} else if (hit_enemy) {
 //     game_state_ = game_state::miss;
 //   }
 

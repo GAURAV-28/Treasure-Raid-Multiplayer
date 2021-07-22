@@ -8,11 +8,9 @@
 //#include "food.hpp"
 #include "image.hpp"
 #include "input.hpp"
-#include "image.hpp"
 #include "map.hpp"
 //#include "mixer_manager.hpp"
 #include "player.hpp"
-//#include "wipe.hpp"
 
 
 bool Game::init(){
@@ -98,16 +96,6 @@ void Game::translucence(){     //to draw the translucent surface on top when pau
     const SDL_Rect dst = {0, 0, screen::width, screen::height};
     SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
     SDL_DestroyTexture(trans_texture);
-    
-    if (blink_count_ < 30) {
-      text(font_size::x64, rgb::white, Point{280, 320}, "PAUSED");
-      text(font_size::x36, rgb::white, Point{200, 420}, "press space to continue");
-      ++blink_count_;
-    } else if (blink_count_ < 60) {
-      ++blink_count_;
-    } else {
-      blink_count_ = 0;
-    }
 }
 
 //pause function
@@ -122,4 +110,71 @@ void Game::game_pause(){
     if (input_manager_->edge_key_p(player_type::p1, input_device::space)) {
       game_state_ = game_state::playing;
     }
+
+    if (blink_count_ < 30) {
+      text(font_size::x96, rgb::tc, Point{280, 320}, "PAUSED");
+      text(font_size::x48, rgb::tc, Point{220, 420}, "press space to continue");
+      ++blink_count_;
+    } else if (blink_count_ < 60) {
+      ++blink_count_;
+    } else {
+      blink_count_ = 0;
+    }
 }
+
+void Game::game_win(){
+    
+    SDL_Texture *trans_texture = image_manager_->get(image::fullbg);
+    const SDL_Rect dst = {0, 0, screen::width, screen::height};
+    SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
+    SDL_DestroyTexture(trans_texture);
+
+    if (input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
+      blink_count_= 0;
+      game_count_ = 0;
+      menu_option_= 0;
+      game_mode_  = 0;
+      game_state_ = game_state::title;
+    }
+
+    switch (game_mode_){
+      case 0:{
+        std::stringstream score;
+        score << "YOUR SCORE : " << p1->get_score();
+        text(font_size::x96, rgb::tc, Point{240, 200}, "YOU WIN !!!");
+        text(font_size::x64, rgb::op2, Point{230,360}, score.str().c_str());
+        break;
+      }
+      case 1:{
+        std::stringstream score1;
+        std::stringstream score2;
+        const unsigned int p1s =  p1->get_score();
+        const unsigned int p2s =  p2->get_score();
+        score1 << "PLAYER A SCORE : " << p1s;
+        score2 << "PLAYER B SCORE : " << p2s;
+        text(font_size::x64, rgb::op2, Point{200,360}, score1.str().c_str());
+        text(font_size::x64, rgb::op2, Point{200,450}, score2.str().c_str());
+
+        if(p1s>p2s){
+          text(font_size::x96, rgb::tc, Point{130, 200}, "PLAYER A WINS !!!");
+        } else if(p1s == p2s){
+          text(font_size::x96, rgb::tc, Point{340, 200}, "TIE !!!");
+        } else{
+          text(font_size::x96, rgb::tc, Point{130, 200}, "PLAYER B WINS !!!");
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+    if (blink_count_ < 30) {
+      text(font_size::x48, rgb::tc, Point{240, 540}, "press enter to continue");
+      ++blink_count_;
+    } else if (blink_count_ < 60) {
+      ++blink_count_;
+    } else {
+      blink_count_ = 0;
+    }
+}
+

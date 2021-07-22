@@ -23,13 +23,13 @@ struct RGB {
 
 //standard colors
 namespace rgb {
-const RGB black = RGB{0x00, 0x00, 0x00};
-const RGB red = RGB{0xff, 0x00, 0x00};
-const RGB white = RGB{0xff, 0xff, 0xff};
-const RGB tc = RGB({0xff,0xc9,0x47});
-const RGB blink = RGB({0xdf, 0x76, 0x0b});
-const RGB op2 = RGB({0xde,0xff,0xff});
-const RGB foot = RGB{0xff,0xeb,0xaf};
+const RGB black =   RGB{0x00, 0x00, 0x00};
+const RGB red   =   RGB{0xff, 0x00, 0x00};
+const RGB white =   RGB{0xff, 0xff, 0xff};
+const RGB tc    =   RGB({0xff,0xc9,0x47});
+const RGB blink =   RGB({0xdf, 0x76, 0x0b});
+const RGB op2   =   RGB({0xde,0xff,0xff});
+const RGB foot  =   RGB{0xff,0xeb,0xaf};
 }
 
 //game class
@@ -66,17 +66,17 @@ class Game{
     std::unique_ptr<Player> p2;
 
     //game functions
-    void game_title();
-    void game_start();
+    void game_title();  //game_title.cpp
+    void game_start();  //game_start.cpp
     void play_game();   //play_game.cpp
-    void game_clear();
     void game_miss();
     void game_over();
+    void game_win();
     void game_pause(); //game.cpp
 
     //text and score functions
     void text(const unsigned char font_size, const RGB &rgb, const Point &p, const char *str) const; //game.cpp
-    void score() const;
+    void score() const;  //score.cpp
     void translucence(); //game.cpp
     
     //initialization functions
@@ -150,9 +150,6 @@ class Game{
 
     inline void play(){
         //game loop
-        //map->init();
-        //p1->init(map.get());
-        //p2->init(map.get());
         while(1){
             input_manager_->update();
 
@@ -160,18 +157,21 @@ class Game{
             
             switch (game_state_) {
             case game_state::title:
+                //std::cout<<p2->get_score()<<"\n";
                 game_title();
-                //game_pause();
                 break;
             case game_state::start:
-            case game_state::playing:
+                game_start();
+                break;
             case game_state::clear:
+            case game_state::playing:
             case game_state::miss:
             case game_state::gameover:
                 play_game();
                 break;
             case game_state::pause:
-                game_pause();
+                std::cout<<p2->get_score()<<"\n";
+                game_win();
                 break;
             }
 

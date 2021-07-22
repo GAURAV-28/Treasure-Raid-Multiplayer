@@ -18,7 +18,7 @@ class Player{
     const unsigned char type;
     unsigned char dir;
     int life;
-    unsigned int score;
+    unsigned int score=0;
     Point pos_;
     Point curr_;
     Point nxt_;
@@ -40,17 +40,17 @@ class Player{
           break;
         }
         case player_type::p2:{
-          if(map->check_state(2,1) == map_state::path){
+          //if(map->check_state(2,1) == map_state::path){
             pos_ = {2*block::size, 1*block::size};
             curr_= {2,1};
             nxt_ = {2,1};
-          }
+          //}
             
-          else {
-            pos_ = {1*block::size, 2*block::size};
-            curr_= {1,2};
-            nxt_ = {1,2};
-          }
+          // else {
+          //   pos_ = {1*block::size, 2*block::size};
+          //   curr_= {1,2};
+          //   nxt_ = {1,2};
+          // }
           
           dir = 0;
           break;
@@ -152,17 +152,24 @@ class Player{
       nxt_ = dst_block;
     }
 
-    // Circle corner
-    // if (map.check_state(Point{dst_block.x + 2, dst_block.y})
-    //     == map_state::left_warp_pos) {
-    //   next_block_.x = block::count_x;
-    //   pos_.x = block::size * next_block_.x;
-    // }
-    // if (map.check_state(Point{dst_block.x - 2, dst_block.y})
-    //     == map_state::right_warp_pos) {
-    //   next_block_.x = -1;
-    //   pos_.x = block::size * next_block_.x;
-    // }
   }
+
+
+  inline Point get_pos() const { return pos_; }
+  inline void set_pos(const Point &p) { pos_ = p; }
+    
+  inline Point get_block() const noexcept { return curr_; }
+
+  inline int get_life() const noexcept { return life; }
+  inline void set_life(const int l) noexcept { life = l; }
+
+  inline unsigned int get_score() const noexcept { return score; }
+  inline void set_score(const unsigned int s) noexcept { score = s; }
+
+    // inline bool get_damaged() const noexcept { return damaged_p_; }
+
+    // inline void set_damaged(const bool damaged_p) noexcept {
+    //   damaged_p_ = damaged_p;
+    // }
 
 };
