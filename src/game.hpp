@@ -38,7 +38,7 @@ class Game{
     enum class game_state {
         title,
         start,
-        clear,
+        win,
         miss,
         playing,
         gameover,
@@ -157,21 +157,21 @@ class Game{
             
             switch (game_state_) {
             case game_state::title:
-                //std::cout<<p2->get_score()<<"\n";
                 game_title();
                 break;
             case game_state::start:
                 game_start();
                 break;
-            case game_state::clear:
             case game_state::playing:
             case game_state::miss:
             case game_state::gameover:
                 play_game();
                 break;
-            case game_state::pause:
-                std::cout<<p2->get_score()<<"\n";
+            case game_state::win:
                 game_win();
+                break;
+            case game_state::pause:
+                game_pause();
                 break;
             }
 

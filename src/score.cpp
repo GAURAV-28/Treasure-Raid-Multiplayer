@@ -18,38 +18,48 @@ void Game::score() const{
 
     // Draw the score itself.
     {
-      std::stringstream score;
-      score << "SCORE : " << p1->get_score();
-      text(font_size::x36, rgb::op2, Point{360, 0}, score.str().c_str());
+      if(game_mode_==0){
+        std::stringstream score;
+        score << "SCORE : " << p1->get_score();
+        text(font_size::x36, rgb::op2, Point{360, 0}, score.str().c_str());
 
-      SDL_Texture *p_texture = image_manager_->get(image::p1);
-      const SDL_Rect src = {0,0,block::size,block::size};
-      const SDL_Rect dst = {5+static_cast<Sint16>(720),5+static_cast<Sint16>(0),30,30};
-      image_manager_->render_copy(*p_texture, src, dst);
-      SDL_DestroyTexture(p_texture);
+        SDL_Texture *p_texture = image_manager_->get(image::p1);
+        const SDL_Rect src = {0,0,block::size,block::size};
+        const SDL_Rect dst = {5+static_cast<Sint16>(720),5+static_cast<Sint16>(0),30,30};
+        image_manager_->render_copy(*p_texture, src, dst);
+        SDL_DestroyTexture(p_texture);
+      }
       
 
       std::stringstream life;
       life << "x " << p1->get_life();
       text(font_size::x36, rgb::op2, Point{760, 0}, life.str().c_str());
 
-      // if (game_mode_ == game_mode::battle) {
-      //   const unsigned int offset_y = 80;
-      //   std::stringstream score;
-      //   //score << "S c o r e  :  " << std::setw(6) << p2_->get_score();
-      //   //draw_text(font_size::x16, rgb::white, Point{x1, y1 + offset_y},score.str().c_str());
+      if (game_mode_ == 1) {
+        std::stringstream score;
+        score << "SCORE  A : " << p1->get_score();
+        text(font_size::x36, rgb::op2, Point{280, 0}, score.str().c_str());
 
-      //   //SDL_Texture *p_texture = image_manager_->get(image::p2);
-      //   const SDL_Rect src = {block::size, 0, block::size, block::size};
-      //   const SDL_Rect dst = {x2, y2 + offset_y, block::size, block::size};
-      //   SDL_RenderCopy(renderer_, p_texture, &src, &dst);
-      //   SDL_DestroyTexture(p_texture);
+        SDL_Texture *p_texture = image_manager_->get(image::p1);
+        const SDL_Rect src = {0,0,block::size,block::size};
+        const SDL_Rect dst = {5+static_cast<Sint16>(720),5+static_cast<Sint16>(0),30,30};
+        image_manager_->render_copy(*p_texture, src, dst);
+        SDL_DestroyTexture(p_texture);
 
-      //   std::stringstream life;
-      //   //life << "x  " << p2_->get_life();
-      //   draw_text(font_size::x16, rgb::white, Point{x3, y3 + offset_y},
-      //             life.str().c_str());
-      // }
+        std::stringstream score1;
+        score1 << " B : " << p2->get_score();
+        text(font_size::x36, rgb::op2, Point{480, 0}, score1.str().c_str());
+
+        SDL_Texture *p_texture1 = image_manager_->get(image::p2);
+        const SDL_Rect src1 = {0,0,block::size,block::size};
+        const SDL_Rect dst1 = {5+static_cast<Sint16>(640),5+static_cast<Sint16>(0),30,30};
+        image_manager_->render_copy(*p_texture1, src1, dst1);
+        SDL_DestroyTexture(p_texture);
+
+        std::stringstream life;
+        life << "x " << p2->get_life();
+        text(font_size::x36, rgb::op2, Point{680,0},life.str().c_str());
+      }
     }
 
     // Draw the rest time of power mode.

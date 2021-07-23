@@ -15,6 +15,7 @@
   
 //game function when play game mode is on..
 void Game::play_game(){
+  
   map->draw();
   coin->draw();
   //enemy_->draw();
@@ -33,7 +34,7 @@ void Game::play_game(){
 
 const bool coin_state = coin->check_state(game_mode_, *p1, *p2);
 //   const bool hit_enemy = enemy_->check_hit_enemy(game_mode_, *p1_);
-if(coin_state) game_state_ = game_state::clear;
+if(coin_state) game_state_ = game_state::win;
 //} else if (hit_enemy) {
 //     game_state_ = game_state::miss;
 //   }

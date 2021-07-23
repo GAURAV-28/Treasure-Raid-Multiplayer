@@ -81,7 +81,7 @@ class Coin {
   /**
    * Return true if all the foods are eaten, and false otherwise.
    */
-  inline bool check_state(const unsigned int mode, Player &p1, Player &p2){
+  inline bool check_state(unsigned int mode, Player &p1, Player &p2){
     const Point block = p1.get_block();
     switch (coin_[block.y][block.x]) {
       case coin_state::coin: {
@@ -102,11 +102,12 @@ class Coin {
 
     if (mode == 1) {
       const Point block = p2.get_block();
+      //std::cout<<(coin_[2][1]==coin_state::none)<<"\n";
       switch (coin_[block.y][block.x]) {
         case coin_state::coin: {
           // Mix_PlayChannel(se_type::chomp,mixer_manager_->get_se(se_type::chomp), 0);
-          coin_[block.y][block.x] = coin_state::coin;
-          p2.set_score(p2.get_score() + 10);
+          coin_[block.y][block.x] = coin_state::none;
+          if(block.x!=2 || block.y!=1) p2.set_score(p2.get_score() + 10);
           break;
         }
         // case food_state::counter_food: {

@@ -129,14 +129,6 @@ void Game::game_win(){
     SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
     SDL_DestroyTexture(trans_texture);
 
-    if (input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
-      blink_count_= 0;
-      game_count_ = 0;
-      menu_option_= 0;
-      game_mode_  = 0;
-      game_state_ = game_state::title;
-    }
-
     switch (game_mode_){
       case 0:{
         std::stringstream score;
@@ -175,6 +167,14 @@ void Game::game_win(){
       ++blink_count_;
     } else {
       blink_count_ = 0;
+    }
+
+    if (input_manager_->edge_key_p(player_type::p1, input_device::enter)) {
+      blink_count_= 0;
+      game_count_ = 0;
+      menu_option_= 0;
+      game_mode_  = 0;
+      game_state_ = game_state::title;
     }
 }
 
