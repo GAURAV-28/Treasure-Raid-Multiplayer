@@ -69,10 +69,10 @@ class Game{
     void game_title();  //game_title.cpp
     void game_start();  //game_start.cpp
     void play_game();   //play_game.cpp
-    void game_miss();
-    void game_over();
-    void game_win();
-    void game_pause(); //game.cpp
+    void game_miss();   //game_over.cpp
+    void game_over();   //game_over.cpp
+    void game_win();    //game.cpp
+    void game_pause();  //game.cpp
 
     //text and score functions
     void text(const unsigned char font_size, const RGB &rgb, const Point &p, const char *str) const; //game.cpp
@@ -162,13 +162,17 @@ class Game{
             case game_state::start:
                 game_start();
                 break;
-            case game_state::playing:
             case game_state::miss:
-            case game_state::gameover:
+                game_miss();
+                break;
+            case game_state::playing:
                 play_game();
                 break;
             case game_state::win:
                 game_win();
+                break;
+            case game_state::gameover:
+                game_over();
                 break;
             case game_state::pause:
                 game_pause();

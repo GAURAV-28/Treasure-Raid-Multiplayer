@@ -34,7 +34,14 @@ void Game::play_game(){
 
 const bool coin_state = coin->check_state(game_mode_, *p1, *p2);
 //   const bool hit_enemy = enemy_->check_hit_enemy(game_mode_, *p1_);
-if(coin_state) game_state_ = game_state::win;
+if(game_mode_ == 0){
+  Point p = p1->get_pos();
+  if(coin_state || (p.x==19 && p.y==19)) game_state_ = game_state::win;
+}
+else{
+  if(coin_state) game_state_ = game_state::win;
+}
+
 //} else if (hit_enemy) {
 //     game_state_ = game_state::miss;
 //   }

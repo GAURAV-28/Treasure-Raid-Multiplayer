@@ -183,8 +183,8 @@ void Game::game_title(){
       p2->set_life(2);
       p1->set_score(0);
       p2->set_score(0);
-        //p1_->set_damaged(false);
-        //p2_->set_damaged(false);
+      p1->set_damaged(false);
+      p2->set_damaged(false);
         //p1_->set_power_mode(0);
         //p2_->set_power_mode(0);
 

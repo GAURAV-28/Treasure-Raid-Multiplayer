@@ -83,15 +83,16 @@ void Game::translucence(){     //to draw the translucent surface on top when pau
     amask = 0xff000000;
 #endif
 
-    // SDL_Surface *trans_surface = 
-    //     (SDL_CreateRGBSurface(SDL_SWSURFACE, screen::width, screen::height, 32, rmask, gmask, bmask, amask));
-    // if (trans_surface == nullptr) {
-    //   std::cerr << "CreateRGBSurface failed: " << SDL_GetError() << '\n';
-    //   exit(EXIT_FAILURE);
-    // }
-	
-    SDL_Texture *trans_texture = image_manager_->get(image::fullbg);
-    //SDL_FreeSurface(trans_surface);
+    SDL_Surface *trans_surface = 
+        (SDL_CreateRGBSurface(SDL_SWSURFACE, screen::width, screen::height, 32, rmask, gmask, bmask, amask));
+    if (trans_surface == nullptr) {
+      std::cerr << "CreateRGBSurface failed: " << SDL_GetError() << '\n';
+      exit(EXIT_FAILURE);
+    }
+
+    SDL_Texture *trans_texture = SDL_CreateTextureFromSurface(renderer, trans_surface);
+    //SDL_Texture *trans_texture = image_manager_->get(image::fullbg);
+    SDL_FreeSurface(trans_surface);
 
     const SDL_Rect dst = {0, 0, screen::width, screen::height};
     SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
@@ -101,19 +102,19 @@ void Game::translucence(){     //to draw the translucent surface on top when pau
 //pause function
 void Game::game_pause(){
     map->draw();
-    //food_->draw();
+    coin->draw();
     //enemy_->draw();
     p1->draw(game_mode_);
     p2->draw(game_mode_);
-    //draw_score();
+    score();
     translucence();
     if (input_manager_->edge_key_p(player_type::p1, input_device::space)) {
       game_state_ = game_state::playing;
     }
 
     if (blink_count_ < 30) {
-      text(font_size::x96, rgb::tc, Point{280, 320}, "PAUSED");
-      text(font_size::x48, rgb::tc, Point{220, 420}, "press space to continue");
+      text(font_size::x96, rgb::op2, Point{280, 280}, "PAUSED");
+      text(font_size::x48, rgb::op2, Point{220, 400}, "press space to continue");
       ++blink_count_;
     } else if (blink_count_ < 60) {
       ++blink_count_;
@@ -134,7 +135,7 @@ void Game::game_win(){
         std::stringstream score;
         score << "YOUR SCORE : " << p1->get_score();
         text(font_size::x96, rgb::tc, Point{240, 200}, "YOU WIN !!!");
-        text(font_size::x64, rgb::op2, Point{230,360}, score.str().c_str());
+        text(font_size::x64, rgb::op2, Point{240,360}, score.str().c_str());
         break;
       }
       case 1:{
@@ -145,7 +146,7 @@ void Game::game_win(){
         score1 << "PLAYER A SCORE : " << p1s;
         score2 << "PLAYER B SCORE : " << p2s;
         text(font_size::x64, rgb::op2, Point{200,360}, score1.str().c_str());
-        text(font_size::x64, rgb::op2, Point{200,450}, score2.str().c_str());
+        text(font_size::x64, rgb::op2, Point{200,440}, score2.str().c_str());
 
         if(p1s>p2s){
           text(font_size::x96, rgb::tc, Point{130, 200}, "PLAYER A WINS !!!");

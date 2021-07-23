@@ -32,10 +32,11 @@ void Game::game_start(){
       ++game_count_;
       break;
   }
-  if (game_count_ < 200){
-    text(font_size::x96, rgb::op2, Point{250,240}, "LET'S GO !!!");
-    if (blink_count_ < 30) {
-        text(font_size::x64, rgb::op2, Point{220,360}, "press enter to play");
+  if (game_count_ < 160){
+      //text(font_size::x96, rgb::op2, Point{250,240}, "LET'S GO !!!");
+      if (blink_count_ < 40) {
+        //text(font_size::x64, rgb::op2, Point{220,360}, "press enter to play");
+        text(font_size::x96, rgb::op2, Point{250,240}, "LET'S GO !!!");
         ++blink_count_;
       } else if (blink_count_ < 60) {
         ++blink_count_;
@@ -43,7 +44,7 @@ void Game::game_start(){
         blink_count_ = 0;
       }
   }
-  else if (game_count_ > 220) {
+  else if (game_count_ > 180) {
     game_count_ = 0;
     game_state_ = game_state::playing;
     //p1->set_power_mode(0);

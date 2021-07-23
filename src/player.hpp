@@ -25,6 +25,7 @@ class Player{
     SDL_Renderer *gRenderer;
     const ImageManager *image_manager_;
     const InputManager *input_manager_;
+    bool damaged;
     //const Map m;
 
     public:
@@ -145,7 +146,7 @@ class Player{
     // TODO: make private function
     if (dst_block_state == map_state::path
         || dst_block_state == map_state::coin
-        //|| dst_block_state == map_state::player
+        || dst_block_state == map_state::end
         || dst_block_state == map_state::player1_init_pos
         || dst_block_state == map_state::player2_init_pos
       ) {
@@ -158,18 +159,18 @@ class Player{
   inline Point get_pos() const { return pos_; }
   inline void set_pos(const Point &p) { pos_ = p; }
     
-  inline Point get_block() const noexcept { return curr_; }
+  inline Point get_block() const{ return curr_; }
 
-  inline int get_life() const noexcept { return life; }
-  inline void set_life(const int l) noexcept { life = l; }
+  inline int get_life() const { return life; }
+  inline void set_life(const int l) { life = l; }
 
-  inline unsigned int get_score() const noexcept { return score; }
-  inline void set_score(const unsigned int s) noexcept { score = s; }
+  inline unsigned int get_score() const { return score; }
+  inline void set_score(const unsigned int s) { score = s; }
 
-    // inline bool get_damaged() const noexcept { return damaged_p_; }
+  inline bool get_damaged() const{ return damaged; }
 
-    // inline void set_damaged(const bool damaged_p) noexcept {
-    //   damaged_p_ = damaged_p;
-    // }
+  inline void set_damaged(const bool damaged_p){
+    damaged = damaged_p;
+  }
 
 };
