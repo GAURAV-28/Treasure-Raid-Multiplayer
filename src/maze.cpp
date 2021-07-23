@@ -39,7 +39,7 @@ struct cell{
 cell MAZE[xsize][ysize];
 
 std::string MazeGenerator::generate(){
-
+	numin=1;
 	srand((unsigned int)time(NULL)); //seed random number generator with system time
 	initialize();      //initialize the maze
 	generateMaze();        //generate the maze

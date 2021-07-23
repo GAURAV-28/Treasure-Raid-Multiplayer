@@ -23,9 +23,9 @@ class Enemy{
     struct Enemy_data{
         const unsigned char type;
         unsigned char dir;
-        int pos_x , pos_y;
-        int curr_x , curr_y;
-        int next_x , next_y;
+        Point pos_;
+        Point curr_;
+        Point nxt_;
         enemy_state state;
 
         Enemy_data(const unsigned char enemy_type) : type(enemy_type) {}
@@ -48,16 +48,16 @@ class Enemy{
           std::pair<int,int> start_block[enemy_character::count] = {
               {1, 19}, {19, 1}, {19, 19}};
         for (auto &enemy : enemies_) {
-            enemy.pos_x = size * start_block[enemy.type].first;
-            enemy.pos_y = size * start_block[enemy.type].second;
+            enemy.pos_.x = block::size * start_block[enemy.type].first;
+            enemy.pos_.y = block::size * start_block[enemy.type].second;
             //enemy.block = start_block[enemy.type];
             //enemy.next_block = start_block[enemy.type];
             //enemy.dir = 2;
             //enemy.anime_count = 0;
             //enemy.anime_weight = 0;
             enemy.dir = 0;
-            enemy.curr_x = enemy.curr_y = 1;
-            enemy.next_x = enemy.next_y = 1;
+            enemy.curr_.x = enemy.curr_.y = 1;
+            enemy.nxt_.x = enemy.nxt_.y = 1;
             enemy.state = enemy_state::normal;
             }
     }
@@ -65,16 +65,16 @@ class Enemy{
     inline void draw() const{
         SDL_Texture *enemies_texture = image_manager_->get(image::enemy);
         for (const auto &enemy : enemies_) {
-        const SDL_Rect dst = {5+static_cast<Sint16>(enemy.pos_x),
-                                5+static_cast<Sint16>(enemy.pos_y),
+        const SDL_Rect dst = {5+static_cast<Sint16>(enemy.pos_.x),
+                                5+static_cast<Sint16>(enemy.pos_.y),
                                 30,
                                 30};
         switch (enemy.state) {
             case enemy_state::normal: {
             const SDL_Rect src = {static_cast<Sint16>(0),
                                     static_cast<Sint16>(0),
-                                    size,
-                                    size};
+                                    block::size,
+                                    block::size};
             image_manager_->render_copy(*enemies_texture, src, dst);
             break;
             }

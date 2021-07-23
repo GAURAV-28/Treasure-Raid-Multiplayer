@@ -15,6 +15,7 @@ enum {
   x,
   c,
   space,
+  enter,
   
   start,
   select,
@@ -31,7 +32,7 @@ class InputManager {
  public:
   InputManager() noexcept {}
 
-  inline void update(const bool debug_mode) noexcept {
+  inline void update() noexcept {
     unsigned int num_devices_ = 2;
     bool new_press_key[num_devices_][input_device::count];
     for (unsigned int i = 0; i < num_devices_; ++i) {
@@ -62,7 +63,9 @@ class InputManager {
 
 
     new_press_key[0][input_device::space] = state[SDL_SCANCODE_SPACE] == SDL_PRESSED;
+    new_press_key[0][input_device::enter] = state[SDL_SCANCODE_RETURN] == SDL_PRESSED;
     new_press_key[1][input_device::space] = state[SDL_SCANCODE_SPACE] == SDL_PRESSED;
+    new_press_key[1][input_device::enter] = state[SDL_SCANCODE_RETURN] == SDL_PRESSED;
 
 
     for (unsigned int i = 0; i < num_devices_; ++i) {
