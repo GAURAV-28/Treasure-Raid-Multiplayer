@@ -1,9 +1,10 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,c++,macos,visualstudiocode,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,c++,macos,visualstudiocode,linux
-
+game
 ### C++ ###
 # Prerequisites
+
 *.d
 
 # Compiled Object files
