@@ -12,7 +12,10 @@ namespace enemy_character{
        e0=0,
        e1=1,
        e2,
-       //e3,
+       e3,
+       e4,
+       e5,
+       e6,
        count
    };
 }
@@ -49,11 +52,11 @@ class Enemy{
       }
     
       inline void init(){
-          std::pair<int,int> start_block[enemy_character::count] = {
-              {1, 19}, {19, 1}, {19, 19}};
+          Point start_block[enemy_character::count] = {
+              {1, 19}, {19, 1}, {19, 19},{1,19}, {19,1}, {19,19}};
         for (auto &enemy : enemies_) {
-            enemy.pos_.x = block::size * start_block[enemy.type].first;
-            enemy.pos_.y = block::size * start_block[enemy.type].second;
+            enemy.pos_.x = block::size * start_block[enemy.type].x;
+            enemy.pos_.y = block::size * start_block[enemy.type].y;
             //enemy.block = start_block[enemy.type];
             //enemy.next_block = start_block[enemy.type];
             //enemy.dir = 2;
@@ -125,69 +128,35 @@ class Enemy{
         }
     }
 
-    bool move_to(const map_state dst_block_state){
-        return dst_block_state == map_state::path
-        || dst_block_state == map_state::coin
-        || dst_block_state == map_state::end
-        || dst_block_state == map_state::player1_init_pos
-        || dst_block_state == map_state::player2_init_pos
-    }
 
-    void move_normal_enemy(Enemy_data &enemy, const Map &map, const Player &p1, const Player &p2) noexcept{
-        const Point dst_pos = {enemy.nxt_.x * block::size,
-                                enemy.nxt_.y * block::size};
-        if(enemy.pos_ != dst_pos){
-            const unsigned int move_value = 2;
-            if (dst_pos.x > enemy.pos_.x) {
-                enemy.pos_.x += move_value;
-                }
-            if (dst_pos.y > enemy.pos_.y) {
-                enemy.pos_.y += move_value;
-            }
-            if (dst_pos.x < enemy.pos_.x) {
-                enemy.pos_.x -= move_value;
-            }
-            if (dst_pos.y < enemy.pos_.y) {
-                enemy.pos_.y -= move_value;
-            }
-            return;
-        }
 
-        enemy.curr_ = enemy.nxt_;
-        const Point up_block = enemy.curr_+{0,-1};
-        const Point right_block = enemy.curr_+{1,0};
-        const Point down_block = enemy.curr_+{0,1};
-        const Point left_block = enemy.curr_ + {-1,0};
-        const Point[] next_block = {enemy.curr_+{0,-1},enemy.curr_+{1,0},enemy.curr_+{0,1},enemy.curr_+{-1,0}};
-        const map_state up_block_state = map.check_state(up_block);
-        const map_state right_block_state = map.check_state(right_block);
-        const map_state down_block_state = map.check_state(down_block);
-        const map_state left_block_state = map.check_state(left_block);
-        // const bool move_to_up_block = move_to(up_block_state);
-        // const bool move_to_right_block = move_to(right_block_state);
-        // const bool move_to_down_block = move_to(down_block_state);
-        // const bool move_to_left_block = move_to(left_block_state);
-        const bool[] move_to_block = {move_to(up_block_state), move_to(right_block_state), move_to(down_block_state), move_to(left_block_state)};
-        vector<Point> possible;
-        vector<unsigned char> direc;
-        for(int i=0; i < 4; i++){
-            if((enemy.dir+2)%4!=i && move_to_block[i]){
-                possible.push_back(next_block[i]);
-                direc.push_back(i);
-            }
-        }
-        if(possible.size()==0){
-            possible.push_back(next_block[enemy.dir]);
-            direc.push_back(i);
-        }
-        const unsigned next = rand()%possible.size();
-        enemy.nxt_= possible[next];
-        enemy.dir = direc[next];
-        return;
 
+    void check_hit_enemy(unsigned int game_mode_, Player &p1, Player &p2) noexcept{
         
+        for (auto &enemy : enemies_) {
+        if (enemy.state == enemy_state::lose) {
+            //move_lose_enemy(enemy, map, p1, p2);
+        } else {
+            if(p1.get_pos() == enemy.pos_){
+                p1.set_life(p1.get_life()-1);
+                p1.set_pos((Point){1,1});
+                break;
+            }
+        }
+        }
+        if(game_mode_==1){
+            for (auto &enemy : enemies_) {
+        if (enemy.state == enemy_state::lose) {
+            //move_lose_enemy(enemy, map, p1, p2);
+        } else {
+            if(p2.get_pos() == enemy.pos_){
+                p2.set_life(p2.get_life()-1);
+                p2.set_pos((Point){1,1});
+                break;
+            }
+        }
+        }
+        }
     }
-
-    //bool check_hit_enemy(const game_mode mode, Player &p1, Player &p2) noexcept;
 
 };

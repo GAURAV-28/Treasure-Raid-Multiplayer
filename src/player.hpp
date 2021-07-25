@@ -157,7 +157,7 @@ class Player{
 
 
   inline Point get_pos() const { return pos_; }
-  inline void set_pos(const Point &p) { pos_ = p; }
+  inline void set_pos(const Point &p) { pos_ = {p.x * block::size, p.y*block::size}; curr_ = p; nxt_ = p;}
     
   inline Point get_block() const{ return curr_; }
 

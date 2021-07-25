@@ -19,11 +19,12 @@ void Game::play_game(){
   map->draw();
   coin->draw();
   //enemy_->draw();
+  enemy->check_hit_enemy(game_mode_, *p1, *p2);
   p1->draw(game_mode_);
   p2->draw(game_mode_);
   enemy->draw();
   score();
-  //enemy_->move(debug_lose_enemy_, *map_, *p1_, game_mode_);
+  enemy->move(*map, *p1, *p2);
   p1->move(*map);
   p2->move(*map);
 //   if (p1_->get_power_mode()) {

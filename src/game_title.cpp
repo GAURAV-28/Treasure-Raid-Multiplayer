@@ -184,7 +184,7 @@ void Game::game_title(){
       p2->init(map.get());
       enemy->init();
       p1->set_life(2);
-      p2->set_life(0);
+      p2->set_life(2);
       p1->set_score(0);
       p2->set_score(0);
       p1->set_damaged(false);
