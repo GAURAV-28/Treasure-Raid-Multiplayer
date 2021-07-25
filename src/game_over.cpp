@@ -2,7 +2,7 @@
 #include <time.h>
 #include <sstream>
 #include "global.hpp"
-//#include "enemy.hpp"
+#include "enemy.hpp"
 #include "font.hpp"
 #include "coins.hpp"
 #include "image.hpp"

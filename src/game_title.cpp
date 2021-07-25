@@ -3,7 +3,7 @@
 #include <time.h>
 #include <sstream>
 #include "global.hpp"
-//#include "enemy.hpp"
+#include "enemy.hpp"
 #include "font.hpp"
 #include "coins.hpp"
 #include "image.hpp"
@@ -12,7 +12,6 @@
 #include "map.hpp"
 //#include "mixer_manager.hpp"
 #include "player.hpp"
-#include "enemy.hpp"
 
 
 void Game::game_title(){
@@ -20,14 +19,14 @@ void Game::game_title(){
   SDL_RenderClear(renderer);
 
   const Point title_pos = Point{200, 100};
-  const Point p1_mode_pos = Point{180, 300};
+  const Point p1_mode_pos = Point{185, 300};
   const Point vs_mode_pos = Point{180, 420};
   const char *title_str = "Treasure Raid";
   const char *p1_mode_str = "SINGLE PLAYER MODE";
   const char *vs_mode_str = "DOUBLE PLAYER MODE";
   const SDL_Rect dst = {0, 0, screen::width, screen::height};
-  const SDL_Rect p1_str_dst = {250, 298, 112, 26};
-  const SDL_Rect vs_str_dst = {250, 348, 112, 26};
+  const SDL_Rect p1_str_dst = {350, 290, 155, 80};
+  const SDL_Rect p2_str_dst = {350, 410, 155, 80};
 
   SDL_Texture *trans_texture = image_manager_->get(image::fullbg);
   SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
@@ -48,10 +47,11 @@ void Game::game_title(){
       switch (menu_option_){
 
         case 0:{
-          SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-          //SDL_RenderFillRect(renderer, &p1_str_dst);
-          text(font_size::x64, rgb::op2, Point{360,300}, "START");
-          text(font_size::x64, rgb::blink, Point{370,420}, "HELP");
+          SDL_SetRenderDrawColor(renderer, 255, 235, 175, 255);
+          SDL_RenderFillRect(renderer, &p1_str_dst);
+      
+          text(font_size::x64, rgb::blink, Point{360,300}, "START");
+          text(font_size::x64, rgb::blink, Point{375,420}, "HELP");
 
           if (input_manager_->edge_key_p(player_type::p1, input_device::x)
           || input_manager_->press_key_p(player_type::p2, input_device::x)
@@ -63,10 +63,10 @@ void Game::game_title(){
         }
 
         case 1:{
-          SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-          //SDL_RenderFillRect(renderer, &p1_str_dst);
+          SDL_SetRenderDrawColor(renderer, 255, 235, 175, 255);
+          SDL_RenderFillRect(renderer, &p2_str_dst);
           text(font_size::x64, rgb::blink, Point{360,300}, "START");
-          text(font_size::x64, rgb::op2, Point{370,420}, "HELP");
+          text(font_size::x64, rgb::blink, Point{375,420}, "HELP");
 
           if (input_manager_->edge_key_p(player_type::p1, input_device::x)
           || input_manager_->press_key_p(player_type::p2, input_device::x)
@@ -118,17 +118,19 @@ void Game::game_title(){
 
       switch (game_mode_) {
         case 0: {
-          SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-          //SDL_RenderFillRect(renderer, &p1_str_dst);
-          text(font_size::x64, rgb::op2, p1_mode_pos, p1_mode_str);
+          const SDL_Rect dst = {170, 290, 500, 80};
+          SDL_SetRenderDrawColor(renderer, 255, 235, 175, 255);
+          SDL_RenderFillRect(renderer, &dst);
+          text(font_size::x64, rgb::blink, p1_mode_pos, p1_mode_str);
           text(font_size::x64, rgb::blink, vs_mode_pos, vs_mode_str);
           break;
         }
         case 1: {
-          SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-          //SDL_RenderFillRect(renderer, &vs_str_dst);
+          const SDL_Rect dst = {170, 410, 500, 80};
+          SDL_SetRenderDrawColor(renderer, 255, 235, 175, 255);
+          SDL_RenderFillRect(renderer, &dst);
           text(font_size::x64, rgb::blink, p1_mode_pos, p1_mode_str);
-          text(font_size::x64, rgb::op2, vs_mode_pos, vs_mode_str);
+          text(font_size::x64, rgb::blink, vs_mode_pos, vs_mode_str);
           break;
         }
       }
@@ -182,7 +184,7 @@ void Game::game_title(){
       p2->init(map.get());
       enemy->init();
       p1->set_life(2);
-      p2->set_life(2);
+      p2->set_life(0);
       p1->set_score(0);
       p2->set_score(0);
       p1->set_damaged(false);

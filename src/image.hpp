@@ -14,6 +14,14 @@ namespace image {
         fullbg,
         crown,
         coin,
+        up,
+        down,
+        left,
+        right,
+        a,
+        s,
+        w,
+        d,
         count,
     };
 }  
@@ -48,6 +56,14 @@ class ImageManager {
     load("./data/r2.png", image::fullbg);
     load("./data/crown.png", image::crown);
     load("./data/r.png", image::coin);
+    load("./data/down.png", image::down);
+    load("./data/up.png", image::up);
+    load("./data/left.png", image::left);
+    load("./data/right.png", image::right);
+    load("./data/a.png", image::a);
+    load("./data/s.png", image::s);
+    load("./data/w.png", image::w);
+    load("./data/d.png", image::d);
   }
 
   inline SDL_Texture *get(const unsigned char image_type) const{
