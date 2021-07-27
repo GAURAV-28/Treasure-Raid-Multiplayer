@@ -5,8 +5,8 @@
 #include "map.hpp"
 #include "player.hpp"
 //#include "enemy.hpp"
-//#include <SDL2/SDL_mixer.h>
-//#include "mixer_manager.hpp"
+#include <SDL2/SDL_mixer.h>
+#include "sound_manager.hpp"
 
 
 class Coin {
@@ -18,11 +18,11 @@ class Coin {
 
   coin_state coin_[block::y_count][block::x_count];
   const ImageManager *image_manager_;
-  //const MixerManager *mixer_manager_;
+  const SoundManager *sound_manager_;
 
  public:
-  Coin(const ImageManager *image_manager)
-      : image_manager_(image_manager){}
+  Coin(const ImageManager *image_manager, const SoundManager *sound_manager)
+      : image_manager_(image_manager), sound_manager_(sound_manager){}
 
   inline void init(Map* map, unsigned int game_mode_){
     for (int y = 0; y < block::y_count; ++y) {
@@ -85,6 +85,7 @@ class Coin {
     const Point block = p1.get_block();
     switch (coin_[block.y][block.x]) {
       case coin_state::coin: {
+        Mix_PlayChannel(se_type::coin, sound_manager_->get_se(se_type::coin),0);
         p1.set_score(p1.get_score() + 10);
         coin_[block.y][block.x] = coin_state::none;
         break;

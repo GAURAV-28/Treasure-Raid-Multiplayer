@@ -1,11 +1,12 @@
 #pragma once
-
+#include <SDL2/SDL_mixer.h>
 #include "map.hpp"
 #include "image.hpp"
 #include <iostream>
 #include <utility>
 #include <stdlib.h>
 #include <vector>
+#include "sound_manager.hpp"
 
 namespace enemy_character{
    enum{
@@ -15,7 +16,7 @@ namespace enemy_character{
        e3,
        e4,
        e5,
-       e6,
+       
        count
    };
 }
@@ -40,11 +41,12 @@ class Enemy{
     std::vector<Enemy_data> enemies_;
     SDL_Renderer *gRenderer;
     const ImageManager *image_manager_;
+    const SoundManager *sound_manager_;
 
     void move_normal_enemy(Enemy_data &enemy, const Map &map, const Player &p1, const Player &p2) noexcept;
 
     public:
-      Enemy(SDL_Renderer *renderer, const ImageManager *image_manager) : gRenderer(renderer) , image_manager_(image_manager) {
+      Enemy(SDL_Renderer *renderer, const ImageManager *image_manager, const SoundManager *sound_manager) : gRenderer(renderer) , image_manager_(image_manager) , sound_manager_(sound_manager) {
         enemies_.reserve(enemy_character::count);
         for (unsigned char i = 0; i < enemy_character::count; ++i) {
             enemies_.push_back(Enemy_data(i));

@@ -9,7 +9,7 @@
 #include "image.hpp"
 #include "input.hpp"
 #include "map.hpp"
-//#include "mixer_manager.hpp"
+#include "sound_manager.hpp"
 #include "player.hpp"
 
   
@@ -27,7 +27,7 @@ void Game::play_game(){
   p1->move(*map);
   p2->move(*map);
   bool hit_enemy = false;
-  if (!p1->get_power_mode){
+  if (!p1->get_power_mode()){
     enemy->move(*map, *p1, *p2);
     hit_enemy = enemy->check_hit_enemy(game_mode_, *p1, *p2);
   }

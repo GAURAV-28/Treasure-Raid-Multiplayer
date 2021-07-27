@@ -5,6 +5,9 @@
 #include "input.hpp"
 #include "global.hpp"
 #include <iostream>
+#include <SDL2/SDL_mixer.h>
+#include "sound_manager.hpp"
+
 
 namespace player_type{
    enum{
@@ -25,13 +28,14 @@ class Player{
     SDL_Renderer *gRenderer;
     const ImageManager *image_manager_;
     const InputManager *input_manager_;
+    const SoundManager *sound_manager_;
     bool damaged;
     int power_mode;
     int power_up;
     //const Map m;
 
     public:
-      Player(const unsigned char ptype, SDL_Renderer *renderer, const ImageManager *image_manager, const InputManager *input_manager) : gRenderer(renderer) , type(ptype), image_manager_(image_manager), input_manager_(input_manager) {}
+      Player(const unsigned char ptype, SDL_Renderer *renderer, const ImageManager *image_manager, const InputManager *input_manager, const SoundManager *sound_manager) : gRenderer(renderer) , type(ptype), image_manager_(image_manager), input_manager_(input_manager), sound_manager_(sound_manager){}
     
       inline void init(Map* map, const bool initial){
       switch (type){
@@ -107,6 +111,7 @@ class Player{
     // }
     if (input_manager_->press_key_p(type, input_device::x) && !power_mode){
       if(power_up>0){
+        Mix_PlayChannel(se_type::siren, sound_manager_->get_se(se_type::siren),0);
         power_mode = 400;
         power_up--;
       }

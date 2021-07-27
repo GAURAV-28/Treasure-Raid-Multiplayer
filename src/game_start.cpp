@@ -3,8 +3,8 @@
 #include <sstream>
 #include "global.hpp"
 #include "enemy.hpp"
-//#include <SDL2/SDL_mixer.h>
-//#include "mixer_manager.hpp"
+#include <SDL2/SDL_mixer.h>
+#include "sound_manager.hpp"
 #include "font.hpp"
 #include "map.hpp"
 #include "player.hpp"
@@ -25,7 +25,7 @@ void Game::game_start(){
   switch (game_count_) {
     case 0: {
       if (p1->get_life() == 2  && p2->get_life() == 2) {
-        //Mix_PlayChannel(se_type::beginning,mixer_manager_->get_se(se_type::beginning),0);
+        Mix_PlayChannel(se_type::start,sound_manager_->get_se(se_type::start),0);
       }
       ++game_count_;
       break;

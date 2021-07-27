@@ -8,8 +8,8 @@
 #include "image.hpp"
 #include "input.hpp"
 #include "map.hpp"
-//#include "mixer_manager.hpp"
-//#include <SDL2/SDL_mixer.h>
+#include "sound_manager.hpp"
+#include <SDL2/SDL_mixer.h>
 #include "player.hpp"
 
 void Game::game_over(){
@@ -77,8 +77,8 @@ void Game::game_miss(){
   score();
 
   if (game_count_ == 0) {
-    //Mix_HaltChannel(-1);
-    //Mix_PlayChannel(-1, mixer_manager_->get_se(se_type::death), 0);
+    Mix_HaltChannel(-1);
+    Mix_PlayChannel(-1, sound_manager_->get_se(se_type::death), 0);
     ++game_count_;
     return;
   }

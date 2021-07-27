@@ -1,5 +1,5 @@
 #include "game.hpp"
-//#include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 #include <time.h>
 #include <sstream>
 #include "global.hpp"
@@ -10,7 +10,7 @@
 #include "input.hpp"
 #include "image.hpp"
 #include "map.hpp"
-//#include "mixer_manager.hpp"
+#include "sound_manager.hpp"
 #include "player.hpp"
 
 
@@ -197,7 +197,7 @@ void Game::game_title(){
     
       srand((unsigned int)time(nullptr));
 
-      //Mix_PlayMusic(mixer_manager_->get_music(), -1);
+      Mix_PlayMusic(sound_manager_->get_music(), -1);
       break;
     }
 

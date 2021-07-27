@@ -59,6 +59,7 @@ class Game{
     //pointers to all components of the game
     std::unique_ptr<ImageManager> image_manager_;
     std::unique_ptr<InputManager> input_manager_;
+    std::unique_ptr<SoundManager> sound_manager_;
     Font font_;
     std::unique_ptr<Map> map;
     std::unique_ptr<Coin> coin;
@@ -141,11 +142,12 @@ class Game{
         init();
 	    image_manager_ = std::make_unique<ImageManager>(renderer);
 	    input_manager_ = std::make_unique<InputManager>();
+        sound_manager_ = std::make_unique<SoundManager>();
         map = std::make_unique<Map>(renderer,image_manager_.get());
-        coin = std::make_unique<Coin>(image_manager_.get());
-	    p1 = std::make_unique<Player>(player_type::p1, renderer, image_manager_.get(), input_manager_.get());
-	    p2 = std::make_unique<Player>(player_type::p2, renderer, image_manager_.get(), input_manager_.get());
-        enemy = std::make_unique<Enemy>(renderer, image_manager_.get());
+        coin = std::make_unique<Coin>(image_manager_.get(),sound_manager_.get());
+	    p1 = std::make_unique<Player>(player_type::p1, renderer, image_manager_.get(), input_manager_.get(),sound_manager_.get());
+	    p2 = std::make_unique<Player>(player_type::p2, renderer, image_manager_.get(), input_manager_.get(),sound_manager_.get());
+        enemy = std::make_unique<Enemy>(renderer, image_manager_.get(),sound_manager_.get());
         SDL_ShowCursor(SDL_DISABLE);
     }
 
