@@ -24,24 +24,33 @@ void Game::play_game(){
   p2->draw(game_mode_);
   enemy->draw();
   score();
-  enemy->move(*map, *p1, *p2);
   p1->move(*map);
   p2->move(*map);
-//   if (p1_->get_power_mode()) {
-//     p1_->set_power_mode(p1_->get_power_mode() - 1);
-//   }
-  // if (p2_->get_power_mode()) {
-  //   p2_->set_power_mode(p2_->get_power_mode() - 1);
-  // }
+  bool hit_enemy = false;
+  if (!p1->get_power_mode){
+    enemy->move(*map, *p1, *p2);
+    hit_enemy = enemy->check_hit_enemy(game_mode_, *p1, *p2);
+  }
+  
+
+
+  if (p1->get_power_mode()) {
+    p1->set_power_mode(p1->get_power_mode() - 1);
+  }
+  if (p2->get_power_mode()) {
+    p2->set_power_mode(p2->get_power_mode() - 1);
+  }
 
 const bool coin_state = coin->check_state(game_mode_, *p1, *p2);
-const bool hit_enemy = enemy->check_hit_enemy(game_mode_, *p1, *p2);
+//const bool 
 if(game_mode_ == 0){
   Point p = p1->get_curr();
-  if(coin_state || (p.x==19 && p.y==19)) game_state_ = game_state::win;
+  if((p.x==19 && p.y==19)) game_state_ = game_state::win;
 }
 else{
-  if(coin_state) game_state_ = game_state::win;
+  Point pa = p1->get_curr();
+  Point pb = p2->get_curr();
+  if(pa.x==19 && pa.y == 19 && pb.x == 19 && pb.y == 19) game_state_ = game_state::win;
 }
 
 if (hit_enemy) {

@@ -26,18 +26,25 @@ class Player{
     const ImageManager *image_manager_;
     const InputManager *input_manager_;
     bool damaged;
+    int power_mode;
+    int power_up;
     //const Map m;
 
     public:
       Player(const unsigned char ptype, SDL_Renderer *renderer, const ImageManager *image_manager, const InputManager *input_manager) : gRenderer(renderer) , type(ptype), image_manager_(image_manager), input_manager_(input_manager) {}
     
-      inline void init(Map* map){
+      inline void init(Map* map, const bool initial){
       switch (type){
         case player_type::p1:{
           pos_ = {1*block::size, 1*block::size};
           curr_ = {1,1};
           nxt_ = {1,1};
           dir = 0;
+          power_mode = 0;
+          if(initial){
+            power_up = 2;
+          }
+          
           break;
         }
         case player_type::p2:{
@@ -45,6 +52,10 @@ class Player{
             pos_ = {2*block::size, 1*block::size};
             curr_= {2,1};
             nxt_ = {2,1};
+            power_mode = 0;
+            if(initial){
+              power_up = 2;
+            }
           //}
             
           // else {
@@ -94,7 +105,13 @@ class Player{
     // if (type_ == player_type::en && mode != game_mode::battle) {
     //   return;
     // }
-
+    if (input_manager_->press_key_p(type, input_device::x) && !power_mode){
+      if(power_up>0){
+        power_mode = 400;
+        power_up--;
+      }
+      
+    }
     const Point dst_pos = {nxt_.x*block::size, nxt_.y*block::size};
 
     if (pos_.x != dst_pos.x || pos_.y != dst_pos.y) {
@@ -172,6 +189,12 @@ class Player{
 
   inline void set_damaged(const bool damaged_p){
     damaged = damaged_p;
+  }
+
+  inline int get_power_mode() const noexcept { return power_mode; }
+
+  inline void set_power_mode(const int power_mode1) noexcept {
+    power_mode = power_mode1;
   }
 
 };

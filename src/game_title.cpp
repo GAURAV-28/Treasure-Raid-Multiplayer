@@ -180,8 +180,8 @@ void Game::game_title(){
       map->init();
       coin->init(map.get(), game_mode_);
         //enemy_->init();
-      p1->init(map.get());
-      p2->init(map.get());
+      p1->init(map.get(), true);
+      p2->init(map.get(), true);
       enemy->init();
       p1->set_life(2);
       p2->set_life(2);
