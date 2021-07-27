@@ -131,15 +131,17 @@ class Enemy{
 
 
 
-    void check_hit_enemy(unsigned int game_mode_, Player &p1, Player &p2) noexcept{
+    bool check_hit_enemy(unsigned int game_mode_, Player &p1, Player &p2) noexcept{
         
         for (auto &enemy : enemies_) {
         if (enemy.state == enemy_state::lose) {
             //move_lose_enemy(enemy, map, p1, p2);
         } else {
-            if(p1.get_pos() == enemy.pos_){
-                p1.set_life(p1.get_life()-1);
-                p1.set_pos((Point){1,1});
+            if(p1.get_curr() == enemy.curr_ && p1.get_curr() != (Point) {1,1}){
+                //p1.set_life(p1.get_life()-1);
+                //p1.set_pos((Point){1,1});
+                p1.set_damaged(true);
+                return true;
                 break;
             }
         }
@@ -149,14 +151,17 @@ class Enemy{
         if (enemy.state == enemy_state::lose) {
             //move_lose_enemy(enemy, map, p1, p2);
         } else {
-            if(p2.get_pos() == enemy.pos_){
-                p2.set_life(p2.get_life()-1);
-                p2.set_pos((Point){1,1});
+            if(p2.get_curr() == enemy.curr_ && p2.get_curr() != (Point) {1,1}){
+                //p2.set_life(p2.get_life()-1);
+                //p2.set_pos((Point){1,1});
+                p2.set_damaged(true);
+                return true;
                 break;
             }
         }
         }
         }
+        return false;
     }
 
 };

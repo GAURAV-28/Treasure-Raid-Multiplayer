@@ -83,16 +83,16 @@ void Game::game_miss(){
     return;
   }
 
-  if (p1->get_life() == 0 || p2->get_life() == 0) {
-    game_count_  = 0;
-    blink_count_ = 0;
-    game_state_  = game_state::win;
-  } 
+  // if (p1->get_life() == 0 || p2->get_life() == 0) {
+  //   game_count_  = 0;
+  //   blink_count_ = 0;
+  //   game_state_  = game_state::win;
+  // } 
 
 
   Player *p = p1->get_damaged() ? p1.get() : p2.get();
   const Point pos = p->get_pos();
-  p->set_pos(Point{pos.x, pos.y - 1});
+  p->set_curr(Point{1, 1});
   
   const int life = p->get_life()-1;
   p->set_life(life);
@@ -101,14 +101,14 @@ void Game::game_miss(){
     game_count_ = 0;
     game_state_ = game_state::start;
     //enemy_->init();
-    p1->init(map.get());
-    p2->init(map.get());
+    p->init(map.get());
+    //p2->init(map.get());
     p1->set_damaged(false);
     p2->set_damaged(false);
     } else {
       game_count_  = 0;
       blink_count_ = 0;
-      game_state_  = game_state::win;
+      game_state_  = game_state::gameover;
     }
   
 }

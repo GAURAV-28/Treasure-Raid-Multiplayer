@@ -19,7 +19,7 @@ void Game::play_game(){
   map->draw();
   coin->draw();
   //enemy_->draw();
-  enemy->check_hit_enemy(game_mode_, *p1, *p2);
+  //enemy->check_hit_enemy(game_mode_, *p1, *p2);
   p1->draw(game_mode_);
   p2->draw(game_mode_);
   enemy->draw();
@@ -35,18 +35,18 @@ void Game::play_game(){
   // }
 
 const bool coin_state = coin->check_state(game_mode_, *p1, *p2);
-//   const bool hit_enemy = enemy_->check_hit_enemy(game_mode_, *p1_);
+const bool hit_enemy = enemy->check_hit_enemy(game_mode_, *p1, *p2);
 if(game_mode_ == 0){
-  Point p = p1->get_pos();
+  Point p = p1->get_curr();
   if(coin_state || (p.x==19 && p.y==19)) game_state_ = game_state::win;
 }
 else{
   if(coin_state) game_state_ = game_state::win;
 }
 
-//} else if (hit_enemy) {
-//     game_state_ = game_state::miss;
-//   }
+if (hit_enemy) {
+    game_state_ = game_state::miss;
+}
 
   if (input_manager_->edge_key_p(player_type::p1, input_device::space)) {
     game_state_ = game_state::pause;
