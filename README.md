@@ -43,8 +43,8 @@ Note:
 *The instructions mentioned above for various installations were used on Ubuntu 20.04.*
 
 ## References 
-1.https://github.com/schuay/pacman
-2.https://github.com/DarkMuffinJoe/Pacman
-3.https://github.com/r6eve/pacman-sdl
-4.https://en.wikipedia.org/wiki/User:Dllu/Maze
-5.https://lazyfoo.net/tutorials/SDL/
+1. https://github.com/schuay/pacman
+2. https://github.com/DarkMuffinJoe/Pacman
+3. https://github.com/r6eve/pacman-sdl
+4. https://en.wikipedia.org/wiki/User:Dllu/Maze
+5. https://lazyfoo.net/tutorials/SDL/
