@@ -7,7 +7,8 @@ The game is built using SDL2 library and the game logic is written in C++. Netwo
 1. Clone the repo.
 2. Open server folder and run ```make```.
 3. Open client folder and run ```make```.
-4. Run ```./server``` in the server folder and play the game either in offline single player or offline double player mode.
+4. Run ```./server``` in the server folder terminal and play the game either in offline single player or offline double player mode.
+5. Run ```./client``` in the client folder terminal. This will connect the game to the localhost server running already. 
 
 
 
