@@ -46,11 +46,11 @@ class SoundManager {
       exit(EXIT_FAILURE);
     }
 
-    load_music("./data/luminousparticle.wav");
+    load_music("./data/bg1.wav");
     load_se("./data/66376e_Pacman_Siren_Sound_Effect.wav", se_type::siren);
-    load_se("./data/pacman_beginning.wav", se_type::start);
+    load_se("./data/st.wav", se_type::start);
     load_se("./data/pacman_death.wav", se_type::death);
-    load_se("./data/pacman_chomp.wav", se_type::coin);
+    load_se("./data/coin1.wav", se_type::coin);
     //load_se("./data/gun-gird1.wav", se_type::beat_enemy);
   }
 
