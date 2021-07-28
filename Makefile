@@ -12,7 +12,7 @@ COMPILER_FLAGS = -g -w -std=c++17 -O2 -Wall -Wextra -pedantic -Wformat=2 -Wstric
 LINKER_FLAGS = $(shell sdl2-config --cflags --libs) -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 #OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = game
+OBJ_NAME = server
 ifeq ($(shell uname -s),Darwin)
 	LINKER_FLAGS += -I/usr/local/include
 endif

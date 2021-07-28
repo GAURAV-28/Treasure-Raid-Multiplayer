@@ -170,6 +170,40 @@ class Game{
         testcount = 1;
         testf = false;
     }
+        int byteToInt(unsigned char* byte) {
+
+        int n = 0;
+
+        n = n + (byte[0] & 0x000000ff);
+        n = n + ((byte[1] & 0x000000ff) << 8);
+        n = n + ((byte[2] & 0x000000ff) << 16);
+        n = n + ((byte[3] & 0x000000ff) << 24);
+
+
+        return n;
+    }
+
+    void intToByte(int n, unsigned char* result) {
+
+        result[0] = n & 0x000000ff;
+        result[1] = (n & 0x0000ff00) >> 8;
+        result[2] = (n & 0x00ff0000) >> 16;
+        result[3] = (n & 0xff000000) >> 24; 
+    }
+
+    inline void decode(ENetPacket* packet){
+        if(packet->data[0]=='P'){
+           p2->set_pos((Point) {byteToInt(&packet->data[1]), byteToInt(&packet->data[5])}) ;
+           if(packet->data[9]=='1'){
+               if(p2->power_up>0){
+                Mix_PlayChannel(se_type::siren, sound_manager_->get_se(se_type::siren),0);
+                //tobesent[9]='1';
+                p1->power_mode = 400;
+                p2->power_up--;
+                }
+           }
+        }
+    }
 
     inline void play(){
         //game loop
@@ -192,6 +226,7 @@ class Game{
                                 event.peer->data,
                                 event.channelID);
                         /* Clean up the packet now that we're done using it. */
+                        decode(event.packet);
                         enet_packet_destroy (event.packet);
                         break;
 
@@ -211,12 +246,12 @@ class Game{
                         break;
                 }
             }
-            if(testf){
-            ENetPacket * packet = enet_packet_create ("packet", 
-                                          strlen ("packet") + 1 ,0);
+            //if(testf){
+            //ENetPacket * packet = enet_packet_create ("packet", 
+             //                             strlen ("packet") + 1 ,0);
             ///testcount +=2;
             //testcount  =testcount%10;
-            enet_peer_send (peer1, 0, packet);}
+            //enet_peer_send (peer1, 0, packet);}
 
             if (!poll_event()){
                 enet_host_destroy(server);

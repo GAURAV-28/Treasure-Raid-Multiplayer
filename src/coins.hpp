@@ -106,7 +106,7 @@ class Coin {
       //std::cout<<(coin_[2][1]==coin_state::none)<<"\n";
       switch (coin_[block.y][block.x]) {
         case coin_state::coin: {
-          // Mix_PlayChannel(se_type::chomp,mixer_manager_->get_se(se_type::chomp), 0);
+          Mix_PlayChannel(se_type::coin, sound_manager_->get_se(se_type::coin),0);
           coin_[block.y][block.x] = coin_state::none;
           if(block.x!=2 || block.y!=1) p2.set_score(p2.get_score() + 10);
           break;

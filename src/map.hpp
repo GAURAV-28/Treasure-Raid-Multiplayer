@@ -8,6 +8,7 @@
 #include "global.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "enet.h"
 
 // const int x_count = 21;
 // const int y_count = 21;
@@ -36,7 +37,7 @@ class Map{
     public:
       Map(SDL_Renderer *renderer, const ImageManager *image_manager) : renderer(renderer), image_manager_(image_manager) {}
             
-      void init();
+      void init(const bool testf, ENetPeer* peer1, const unsigned int game_mode_);
       void draw() const;
 
     //  inline map_state check_state(const Point &p) const noexcept {

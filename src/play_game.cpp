@@ -24,11 +24,12 @@ void Game::play_game(){
   p2->draw(game_mode_);
   enemy->draw();
   score();
-  p1->move(*map);
-  p2->move(*map);
+  p1->move(*map, peer1, testf);
+  if(!testf){
+  p2->move(*map, peer1, testf);}
   bool hit_enemy = false;
   if (!p1->get_power_mode()){
-    enemy->move(*map, *p1, *p2);
+    enemy->move(*map, *p1, *p2, peer1, testf);
     hit_enemy = enemy->check_hit_enemy(game_mode_, *p1, *p2);
   }
   

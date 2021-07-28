@@ -30,6 +30,7 @@ class Player{
     const InputManager *input_manager_;
     const SoundManager *sound_manager_;
     bool damaged;
+    public:
     int power_mode;
     int power_up;
     //const Map m;
@@ -105,18 +106,37 @@ class Player{
       }
     }
 
-    inline void move(const Map &map) noexcept {
+    void intToByte(int n, unsigned char* result) {
+
+        result[0] = n & 0x000000ff;
+        result[1] = (n & 0x0000ff00) >> 8;
+        result[2] = (n & 0x00ff0000) >> 16;
+        result[3] = (n & 0xff000000) >> 24; 
+    }
+
+    inline void move(const Map &map, ENetPeer* peer1, const bool testf) noexcept {
     // if (type_ == player_type::en && mode != game_mode::battle) {
     //   return;
     // }
+    unsigned char tobesent[10];
+    tobesent[9]='0';
     if (input_manager_->press_key_p(type, input_device::x) && !power_mode){
       if(power_up>0){
         Mix_PlayChannel(se_type::siren, sound_manager_->get_se(se_type::siren),0);
+        tobesent[9]='1';
         power_mode = 400;
         power_up--;
       }
       
     }
+    tobesent[0]='P';
+      intToByte(pos_.x,&tobesent[1]);
+      intToByte(pos_.y,&tobesent[5]);
+      if(testf){
+        ENetPacket* packet = enet_packet_create (tobesent, 
+                                         10 ,0);
+        enet_peer_send (peer1, 0, packet);
+      }
     const Point dst_pos = {nxt_.x*block::size, nxt_.y*block::size};
 
     if (pos_.x != dst_pos.x || pos_.y != dst_pos.y) {
@@ -138,8 +158,12 @@ class Player{
       if (dst_pos.y < pos_.y) {
         pos_.y -= move_value;
       }
+      
+      
       return;
     }
+
+
 
     curr_ = nxt_;
 
@@ -180,6 +204,7 @@ class Player{
 
   inline Point get_pos() const { return pos_; }
   inline Point get_curr() const { return curr_;}
+  inline void set_pos(const Point &p){pos_ = p; curr_ = {p.x/block::size, p.y/block::size}; nxt_ = curr_;}
   inline void set_curr(const Point &p) { pos_ = {p.x * block::size, p.y*block::size}; curr_ = p; nxt_ = p;}
     
   inline Point get_block() const{ return curr_; }

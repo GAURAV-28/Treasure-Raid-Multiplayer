@@ -68,8 +68,8 @@
             }
         }
         if(possible.size()==0){
-            possible.push_back(next_block[enemy.dir]);
-            direc.push_back(enemy.dir);
+            possible.push_back(next_block[(enemy.dir+2)%4]);
+            direc.push_back((enemy.dir+2)%4);
         }
         const unsigned next = rand()%possible.size();
         enemy.nxt_= possible[next];

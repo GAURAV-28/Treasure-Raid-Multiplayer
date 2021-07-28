@@ -177,7 +177,7 @@ void Game::game_title(){
 
       // initialize globals
       
-      map->init();
+      map->init(testf, peer1,game_mode_);
       coin->init(map.get(), game_mode_);
         //enemy_->init();
       p1->init(map.get(), true);

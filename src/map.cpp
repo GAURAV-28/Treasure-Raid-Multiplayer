@@ -7,6 +7,7 @@
 #include "image.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "enet.h"
 //#include <random>
 
 map_state char_to_map_state(const char c) {
@@ -25,13 +26,18 @@ map_state char_to_map_state(const char c) {
   }
 }
 
-void Map::init(){
+void Map::init(const bool testf, ENetPeer* peer1, const unsigned int game_mode_){
   
     //const ImageManager *image_manager_;
     //map_state block_[x_count][21];
     
     const std::string block_src = mg.generate();
-
+    //char ch
+    if(testf && game_mode_==1){
+      ENetPacket * packet = enet_packet_create (&block_src[0], 
+                                          strlen (&block_src[0]) + 1 ,ENET_PACKET_FLAG_RELIABLE);
+      enet_peer_send (peer1, 0, packet);                 
+    }
     for (unsigned int y = 0; y < block::y_count; ++y) {
         for (unsigned int x = 0; x < block::x_count; ++x) {
             block[y][x] = char_to_map_state(block_src[y * block::y_count + x]);

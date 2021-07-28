@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <vector>
 #include "sound_manager.hpp"
+#include "enet.h"
 
 namespace enemy_character{
    enum{
@@ -37,6 +38,7 @@ class Enemy{
         Enemy_data(const unsigned char enemy_type) : type(enemy_type) {}
   
     };
+    public:
     
     std::vector<Enemy_data> enemies_;
     SDL_Renderer *gRenderer;
@@ -45,7 +47,7 @@ class Enemy{
 
     void move_normal_enemy(Enemy_data &enemy, const Map &map, const Player &p1, const Player &p2) noexcept;
 
-    public:
+    
       Enemy(SDL_Renderer *renderer, const ImageManager *image_manager, const SoundManager *sound_manager) : gRenderer(renderer) , image_manager_(image_manager) , sound_manager_(sound_manager) {
         enemies_.reserve(enemy_character::count);
         for (unsigned char i = 0; i < enemy_character::count; ++i) {
@@ -119,27 +121,60 @@ class Enemy{
         }
         SDL_DestroyTexture(enemies_texture);
     }
+    int byteToInt(unsigned char* byte) {
+
+        int n = 0;
+
+        n = n + (byte[0] & 0x000000ff);
+        n = n + ((byte[1] & 0x000000ff) << 8);
+        n = n + ((byte[2] & 0x000000ff) << 16);
+        n = n + ((byte[3] & 0x000000ff) << 24);
+
+
+        return n;
+    }
+
+    void intToByte(int n, unsigned char* result) {
+
+        result[0] = n & 0x000000ff;
+        result[1] = (n & 0x0000ff00) >> 8;
+        result[2] = (n & 0x00ff0000) >> 16;
+        result[3] = (n & 0xff000000) >> 24; 
+    }
+
     inline void move(const Map &map,
-                   const Player &p1, const Player &p2) noexcept {
+                   const Player &p1, const Player &p2, ENetPeer* peer1, const bool testf) noexcept {
+        unsigned char tobesent[8*enemy_character::count+1];
+        tobesent[0]='E';
+        int i=1;
         for (auto &enemy : enemies_) {
+            
         if (enemy.state == enemy_state::lose) {
             //move_lose_enemy(enemy, map, p1, p2);
         } else {
             move_normal_enemy(enemy, map, p1, p2);
         }
+            intToByte(enemy.pos_.x, &tobesent[i]);
+            i=i+4;
+            intToByte(enemy.pos_.y, &tobesent[i]);
+            i=i+4;
         }
+        if(testf){
+        ENetPacket* packet = enet_packet_create (tobesent, 
+                                         8*enemy_character::count+1 ,0);
+        enet_peer_send (peer1, 0, packet);}
     }
 
 
 
 
     bool check_hit_enemy(unsigned int game_mode_, Player &p1, Player &p2) noexcept{
-        
+        const unsigned int Hit_distance = block::size / 2;
         for (auto &enemy : enemies_) {
         if (enemy.state == enemy_state::lose) {
             //move_lose_enemy(enemy, map, p1, p2);
         } else {
-            if(p1.get_curr() == enemy.curr_ && p1.get_curr() != (Point) {1,1}){
+            if(p1.get_pos().distance(enemy.pos_) < Hit_distance && p1.get_pos().distance((Point) {0,0}) > 2*block::size){
                 //p1.set_life(p1.get_life()-1);
                 //p1.set_pos((Point){1,1});
                 p1.set_damaged(true);
@@ -153,7 +188,7 @@ class Enemy{
         if (enemy.state == enemy_state::lose) {
             //move_lose_enemy(enemy, map, p1, p2);
         } else {
-            if(p2.get_curr() == enemy.curr_ && p2.get_curr() != (Point) {1,1}){
+            if(p2.get_pos().distance(enemy.pos_) <Hit_distance && p2.get_pos().distance((Point) {0,0}) > 2*block::size){
                 //p2.set_life(p2.get_life()-1);
                 //p2.set_pos((Point){1,1});
                 p2.set_damaged(true);

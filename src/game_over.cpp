@@ -101,7 +101,7 @@ void Game::game_miss(){
     game_count_ = 0;
     game_state_ = game_state::start;
     //enemy_->init();
-    p->init(map.get(), false);
+    //p->init(map.get(), false);
     //p2->init(map.get());
     p1->set_damaged(false);
     p2->set_damaged(false);

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <SDL2/SDL.h>
+#include "enet.h"
 
 namespace input_device {
 
@@ -74,6 +75,16 @@ class InputManager {
       for (unsigned int j = 0; j < input_device::count; ++j) {
         edge_key_[i][j] = !press_key_[i][j] && new_press_key[i][j];
         press_key_[i][j] = new_press_key[i][j];
+      }
+    }
+    unsigned char tobesent[input_device::count+1];
+    tobesent[0]='I';
+    for(int i = 1; i < input_device::count+1; i++){
+      if(press_key_[0][i]){
+        tobesent[i] = '1';
+      }
+      else{
+        tobesent[i] = '0';
       }
     }
   }
