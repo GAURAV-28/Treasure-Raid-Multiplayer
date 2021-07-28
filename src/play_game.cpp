@@ -59,6 +59,8 @@ if (hit_enemy) {
 }
 
   if (input_manager_->edge_key_p(player_type::p1, input_device::space)) {
+    if(testf){ENetPacket * packet = enet_packet_create ("B", strlen ("B") + 1 ,ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send (peer1, 0, packet);}
     game_state_ = game_state::pause;
   }
 

@@ -270,6 +270,12 @@ class Game{
                 }
            }
         }
+        else if(packet->data[0]=='B'){//pause
+            game_state_ = game_state::pause;
+        }
+        else if(packet->data[0]=='N'){//pause
+            game_state_ = game_state::playing;
+        }
     }
 
     inline void play(){

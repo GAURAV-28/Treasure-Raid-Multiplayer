@@ -111,6 +111,8 @@ void Game::game_pause(){
     score();
     translucence();
     if (input_manager_->edge_key_p(player_type::p1, input_device::space)) {
+      ENetPacket * packet = enet_packet_create ("N", strlen ("N") + 1 ,ENET_PACKET_FLAG_RELIABLE);
+      enet_peer_send (peer, 0, packet);
       game_state_ = game_state::playing;
     }
 
