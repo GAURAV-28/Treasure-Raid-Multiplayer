@@ -291,12 +291,12 @@ class Game{
                     //     break;
 
                     case ENET_EVENT_TYPE_RECEIVE:
-                        printf("A packet of length %lu containing %s was received from %s on channel %u.\n",
-                                event.packet->dataLength,
-                                event.packet->data,
-                                event.peer->data,
-                                event.channelID);
-                        /* Clean up the packet now that we're done using it. */
+                    //    // printf("A packet of length %lu containing %s was received from %s on channel %u.\n",
+                    //             event.packet->dataLength,
+                    //             event.packet->data,
+                    //             event.peer->data,
+                    //             event.channelID);
+                    //     /* Clean up the packet now that we're done using it. */
 
                         decode(event.packet);
                         enet_packet_destroy (event.packet);
