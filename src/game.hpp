@@ -1,8 +1,10 @@
 #pragma once
-
+//#define ENET_IMPLEMENTATION
+#include "enet.h"
 #include <time.h>
 #include <iomanip>
 #include <iostream>
+#include <string>
 #include <memory>
 #include <sstream>
 #include "font.hpp"
@@ -66,6 +68,13 @@ class Game{
     std::unique_ptr<Enemy> enemy;
     std::unique_ptr<Player> p1;
     std::unique_ptr<Player> p2;
+    ENetAddress address;
+    ENetHost* server;
+    ENetEvent event;
+    ENetPeer* peer1;
+    int testcount;
+    bool testf;
+
 
     //game functions
     void game_title();  //game_title.cpp
@@ -143,20 +152,76 @@ class Game{
 	    image_manager_ = std::make_unique<ImageManager>(renderer);
 	    input_manager_ = std::make_unique<InputManager>();
         sound_manager_ = std::make_unique<SoundManager>();
+        address = {0};
+        address.host = ENET_HOST_ANY; /* Bind the server to the default localhost.     */
+        address.port = 8123; /* Bind the server to port 7777. */
+        server = enet_host_create(&address, 3, 2, 0, 0);
+        if (server == NULL) {
+            printf("An error occurred while trying to create an ENet server host.\n");
+            //return 1;
+        }
+        printf("Started a server...\n");
         map = std::make_unique<Map>(renderer,image_manager_.get());
         coin = std::make_unique<Coin>(image_manager_.get(),sound_manager_.get());
 	    p1 = std::make_unique<Player>(player_type::p1, renderer, image_manager_.get(), input_manager_.get(),sound_manager_.get());
 	    p2 = std::make_unique<Player>(player_type::p2, renderer, image_manager_.get(), input_manager_.get(),sound_manager_.get());
         enemy = std::make_unique<Enemy>(renderer, image_manager_.get(),sound_manager_.get());
         SDL_ShowCursor(SDL_DISABLE);
+        testcount = 1;
+        testf = false;
     }
 
     inline void play(){
         //game loop
         while(1){
             input_manager_->update();
+            while (enet_host_service(server, &event, 0) > 0) {
+                switch (event.type) {
+                    case ENET_EVENT_TYPE_CONNECT:
+                        printf("A new client connected from %x:%u.\n",  event.peer->address.host, event.peer->address.port);
+                        /* Store any relevant client information here. */
+                        //event.peer->data = "Client information";
+                        peer1 = event.peer;
+                        testf = true;
+                        break;
 
-            if (!poll_event()) return; //exit out of game loop
+                    case ENET_EVENT_TYPE_RECEIVE:
+                        printf("A packet of length %lu containing %s was received from %s on channel %u.\n",
+                                event.packet->dataLength,
+                                event.packet->data,
+                                event.peer->data,
+                                event.channelID);
+                        /* Clean up the packet now that we're done using it. */
+                        enet_packet_destroy (event.packet);
+                        break;
+
+                    case ENET_EVENT_TYPE_DISCONNECT:
+                        printf("%s disconnected.\n", event.peer->data);
+                        /* Reset the peer's client information. */
+                        event.peer->data = NULL;
+                        break;
+
+                    case ENET_EVENT_TYPE_DISCONNECT_TIMEOUT:
+                        printf("%s disconnected due to timeout.\n", event.peer->data);
+                        /* Reset the peer's client information. */
+                        event.peer->data = NULL;
+                        break;
+
+                    case ENET_EVENT_TYPE_NONE:
+                        break;
+                }
+            }
+            if(testf){
+            ENetPacket * packet = enet_packet_create ("packet", 
+                                          strlen ("packet") + 1 ,0);
+            ///testcount +=2;
+            //testcount  =testcount%10;
+            enet_peer_send (peer1, 0, packet);}
+
+            if (!poll_event()){
+                enet_host_destroy(server);
+                return; //exit out of game loop
+            } 
             
             switch (game_state_) {
             case game_state::title:
