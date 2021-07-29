@@ -213,7 +213,7 @@ void Game::game_title(){
     case 5:{
       text(font_size::x96, rgb::tc, Point{360,100}, "Help");
       if (blink_count_ < 30) {
-        text(font_size::x48, rgb::tc, Point{250,540}, "press space to go back");
+        text(font_size::x48, rgb::tc, Point{250,600}, "press space to go back");
         ++blink_count_;
       } else if (blink_count_ < 60) {
         ++blink_count_;
@@ -229,6 +229,37 @@ void Game::game_title(){
       }
 
       text(font_size::x64, rgb::blink, Point{60,200}, "Controls");
+        SDL_Texture *trans_texture = image_manager_->get(image::up);
+        SDL_Rect dst = {295, 280, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
+        trans_texture = image_manager_->get(image::down);
+        dst = {380, 280, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
+        trans_texture = image_manager_->get(image::left);
+        dst = {465, 280, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
+        trans_texture = image_manager_->get(image::right);
+        dst = {550, 280, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture, nullptr, &dst);
+        SDL_DestroyTexture(trans_texture);
+        text(font_size::x64, rgb::white, Point{220,280}, "A : ");
+
+        SDL_Texture *trans_texture1 = image_manager_->get(image::w);
+        SDL_Rect dst1 = {295, 400, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture1, nullptr, &dst1);
+        trans_texture1 = image_manager_->get(image::s);
+        dst1 = {380, 400, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture1, nullptr, &dst1);
+        trans_texture1 = image_manager_->get(image::a);
+        dst1 = {465, 400, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture1, nullptr, &dst1);
+        trans_texture1 = image_manager_->get(image::d);
+        dst1 = {550, 400, 80, 80};
+        SDL_RenderCopy(renderer, trans_texture1, nullptr, &dst1);
+        SDL_DestroyTexture(trans_texture1);
+        text(font_size::x64, rgb::white, Point{220,400}, "B : "); 
+
+        text(font_size::x48, rgb::white, Point{180,500}, "press X to freeze the mummies...");   
       
       break;
     }
